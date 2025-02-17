@@ -217,6 +217,7 @@ import { Table, Spinner, Alert, Button, Modal, Form } from 'react-bootstrap';
 import axios from 'axios';
 import { OverlayScrollbarsComponent } from 'overlayscrollbars-react';
 import PaginationSection from './PaginationSection';
+import { BASE_URL } from "../../api";
 
 const AllProductTable = ({ categoryId }) => {
     const [services, setServices] = useState([]);
@@ -235,7 +236,8 @@ const AllProductTable = ({ categoryId }) => {
     const fetchServices = async () => {
         setLoading(true);
         try {
-            const response = await axios.get(`http://127.0.0.1:8000/api/v1/services/services`);
+       
+            const response = await axios.get(`${BASE_URL}/services/services`);
             setServices(response.data);
         } catch (err) {
             setError('Failed to fetch services');
@@ -256,7 +258,8 @@ const AllProductTable = ({ categoryId }) => {
 
     const updateService = async (updatedService) => {
         try {
-            await axios.put(`http://127.0.0.1:8000/api/v1/services/${updatedService.id}/update/`, updatedService);
+            await axios.put(`${BASE_URL}/services/${updatedService.id}/update/`, updatedService);
+
             fetchServices();
             setShowEditModal(false);
         } catch (error) {
@@ -266,7 +269,7 @@ const AllProductTable = ({ categoryId }) => {
 
     const deleteService = async () => {
         try {
-            await axios.delete(`http://127.0.0.1:8000/api/v1/categories/${categoryId}/services/${selectedService.id}/delete/`);
+            await axios.delete(`${BASE_URL}/categories/${categoryId}/services/${selectedService.id}/delete/`);
             fetchServices();
             setShowDeleteModal(false);
         } catch (error) {

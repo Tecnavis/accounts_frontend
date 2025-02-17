@@ -3,6 +3,7 @@ import axios from "axios";
 import { Table } from "react-bootstrap";
 import { OverlayScrollbarsComponent } from "overlayscrollbars-react";
 import PaginationSection from "./PaginationSection";
+import { BASE_URL } from "../../api";
 
 const AllCustomerTable = () => {
   const [customers, setCustomers] = useState([]);
@@ -17,9 +18,10 @@ const AllCustomerTable = () => {
 
   const fetchCustomers = async () => {
     try {
-      const response = await axios.get("http://127.0.0.1:8000/api/v1/financials/transactions_list/");
+     
+      const response = await axios.get(`${BASE_URL}/financials/transactions_list/`);
       
-      // Filter transactions where transaction_type is "sale"
+    
       const salesTransactions = response.data.filter(
         (transaction) => transaction.transaction_type === "sale"
       );

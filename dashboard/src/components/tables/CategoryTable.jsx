@@ -3,6 +3,7 @@ import { Table, Modal, Button, Form } from 'react-bootstrap';
 import { OverlayScrollbarsComponent } from 'overlayscrollbars-react';
 import PaginationSection from './PaginationSection';
 import axios from 'axios';
+import { BASE_URL } from "../../api";
 
 const CategoryTable = () => {
     const [categories, setCategories] = useState([]);
@@ -23,7 +24,7 @@ const CategoryTable = () => {
 
     const fetchCategories = async () => {
         try {
-            const response = await axios.get('http://127.0.0.1:8000/api/v1/services/categories/');
+            const response = await axios.get(`${BASE_URL}/services/categories/`);
             setCategories(response.data);
         } catch (error) {
             setError('Failed to fetch categories');
@@ -48,7 +49,10 @@ const CategoryTable = () => {
     // Handle category update
     const updateCategory = async () => {
         try {
-            await axios.put(`http://127.0.0.1:8000/api/v1/services/categories/${selectedCategory.id}/update/`, editedCategory);
+            await axios.put(
+                `${BASE_URL}/services/categories/${selectedCategory.id}/update/`,
+                editedCategory
+              );
             fetchCategories(); // Refresh data
             setShowEditModal(false);
         } catch (error) {
@@ -59,7 +63,9 @@ const CategoryTable = () => {
     // Handle category deletion
     const deleteCategory = async () => {
         try {
-            await axios.delete(`http://127.0.0.1:8000/api/v1/services/categories/${selectedCategory.id}/delete/`);
+            await axios.delete(
+                `${BASE_URL}/services/categories/${selectedCategory.id}/delete/`
+              );
             fetchCategories(); // Refresh data
             setShowDeleteModal(false);
         } catch (error) {

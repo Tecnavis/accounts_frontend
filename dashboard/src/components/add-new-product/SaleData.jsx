@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Button, Modal } from "react-bootstrap";
 import axios from "axios";
+import { BASE_URL } from "../../api";
 
 const SaleData = () => {
     const [services, setServices] = useState([]);
@@ -49,7 +50,7 @@ const SaleData = () => {
     useEffect(() => {
         const fetchServices = async () => {
             try {
-                const response = await axios.get("http://127.0.0.1:8000/api/v1/services/services");
+                const response = await axios.get(`${BASE_URL}/services/`);
                 setServices(response.data);
             } catch (error) {
                 console.error("Error fetching services:", error);
@@ -80,7 +81,10 @@ const SaleData = () => {
         }
 
         try {
-        const transactionResponse = await axios.post("http://127.0.0.1:8000/api/v1/financials/transactions/", {
+           
+
+        const transactionResponse = await axios.post(
+        `${BASE_URL}/financials/transactions/`,{
             username: formData.username,
             email: formData.email,      
             contact_number: formData.contact_number,
@@ -103,8 +107,7 @@ const SaleData = () => {
                     payment_mode: formData.payment_mode,
                     payment_date: formData.sale_date
                 });
-        
-                await axios.post("http://127.0.0.1:8000/api/v1/financials/payments/create/", {
+                await axios.post(`${BASE_URL}/financials/payments/create/`, {
                     transaction: transactionResponse.data.transaction_id,
                     amount: parseFloat(amountPaid),
                     payment_mode: formData.payment_mode,

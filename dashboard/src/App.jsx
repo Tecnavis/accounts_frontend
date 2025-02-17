@@ -65,7 +65,6 @@ import ProtectedRoute from '../src/protectedroute/ProtectedRoute';
 
 
 function App() {
-
   const [isAuthenticated, setIsAuthenticated] = useState(!!Cookies.get('access_token'));
 
   // Keep checking for auth changes (like logout)
@@ -75,38 +74,42 @@ function App() {
 
     return () => window.removeEventListener('storage', checkAuth);
   }, []);
-  
+
   return (
     <Router>
       <Routes>
-        <Route element={<Layout/>}> 
-          <Route path="/registration" element={<Registration/>}/>
+        <Route element={<Layout />}>
+          <Route path="/registration" element={<Registration />} />
+          <Route path="/login" element={<Login/>}/>
           <Route path="/login2" element={<Login2 setIsAuthenticated={setIsAuthenticated} />} />
+
+          <Route path="/allSales" element={<AllSales />} />
+
+          {/* Protected Routes */}
           <Route element={<ProtectedRoute isAuthenticated={isAuthenticated} />}>
             <Route path="/" element={<CrmDashboard />} />
+            <Route path="/inventorydashboard" element={<CrmDashboard />} />
+            <Route path="/allProduct" element={<AllProduct />} />
+            <Route path="/category" element={<Category />} />
+            <Route path="/addNewProduct" element={<AddNewProduct />} />
+            <Route path="/purchaseditem" element={<Customer />} />
+            {/* <Route path="/allSales" element={<AllSales />} /> */}
+            <Route path="/addSales" element={<AddSales />} />
+            <Route path="/allpurchase" element={<AllPurchase />} />
+            <Route path="/addPurchase" element={<AddPurchase />} />
+            <Route path="/allCustomer" element={<AllCustomer />} />
+            <Route path="/supplier" element={<Company />} />
+            <Route path="/addEmployee" element={<AddEmployee />} />
+            <Route path="/allEmployee" element={<AllEmployee />} />
+            <Route path="/invoice/:id" element={<Invoices />} />
           </Route>
-          {/* <Route path="/" element={<CrmDashboard/>}/> */}
-          <Route path="/inventorydashboard" element={<CrmDashboard/>}/>
-          <Route path="/allProduct" element={<AllProduct/>}/>
-          <Route path="/category" element={<Category/>}/>
-          <Route path="/addNewProduct" element={<AddNewProduct/>}/>
-          <Route path="/purchaseditem" element={<Customer/>}/>
-          <Route path="/allSales" element={<AllSales/>}/>
-          <Route path="/addSales" element={<AddSales/>}/>
-    
-          <Route path="/allpurchase" element={<AllPurchase/>}/>
-          <Route path="/addPurchase" element={<AddPurchase/>}/>
+        </Route>
+      </Routes>
+    </Router>
+  );
+}
 
-          <Route path="/allCustomer" element={<AllCustomer/>}/>
-          <Route path="/supplier" element={<Company/>}/>
-
-          <Route path="/addEmployee" element={<AddEmployee/>}/>
-          <Route path="/allEmployee" element={<AllEmployee/>}/>
-
-          {/* <Route path="/invoices" element={<Invoices/>}/> */}
-          <Route path="/invoice/:id" element={<Invoices />} />
-
-          {/* <Route path="/allTransaction" element={<AllTransaction/>}/> */}
+export default App;
 
 
 
@@ -117,11 +120,7 @@ function App() {
 
 
 
-
-
-
-
-
+{/* 
           <Route path="/stocklist" element={<StockList/>}/>
           <Route path="/salesorders" element={<Salesorders/>}/>
           <Route path="/fileManager" element={<FileManager/>}/>
@@ -136,11 +135,9 @@ function App() {
           <Route path="/chat" element={<Chat/>}/>
           <Route path="/calendar" element={<Calendar/>}/>
           <Route path="/email" element={<Email/>}/>
-          
           <Route path="/contacts" element={<Contacts/>}/>
           <Route path="/profile" element={<Profile/>}/>
           <Route path="/editProfile" element={<EditProfile/>}/>
-          {/* <Route path="/utility" element={<Utility/>}/> */}
           <Route path="/sweetAlert" element={<SweetAlert/>}/>
           <Route path="/nestableList" element={<NestableList/>}/>
           <Route path="/animation" element={<Animation/>}/>
@@ -149,11 +146,12 @@ function App() {
           <Route path="/table" element={<Table/>}/>
           <Route path="/charts" element={<Charts/>}/>
           <Route path="/icon" element={<Icon/>}/>
-          <Route path="/map" element={<Map/>}/>
-        </Route>
-        <Route path="/login" element={<Login/>}/>
-        <Route path="/login3" element={<Login3/>}/>
-        
+          <Route path="/map" element={<Map/>}/> */}
+
+          
+  
+        {/* <Route path="/login" element={<Login/>}/>
+        <Route path="/login3" element={<Login3/>}/>   
         <Route path="/resetPassword" element={<ResetPassword/>}/>
         <Route path="/updatePassword" element={<UpdatePassword/>}/>
         <Route path="/loginStatus" element={<LoginStatus/>}/>
@@ -166,12 +164,9 @@ function App() {
         <Route path="/error504" element={<Error504/>}/>
         <Route path="/comingSoon" element={<ComingSoon/>}/>
         <Route path="/comingSoon2" element={<ComingSoon2/>}/>
-        {/* <Route path="/pricingTable" element={<PricingTable/>}/> */}
+       
         <Route path="/pricingTable2" element={<PricingTable2/>}/>
-        <Route path="/underConstruction" element={<UnderConstruction/>}/>
-      </Routes>
-    </Router>
-  )
-}
+        <Route path="/underConstruction" element={<UnderConstruction/>}/> */}
 
-export default App
+
+ 

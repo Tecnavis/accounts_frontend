@@ -3,6 +3,7 @@ import axios from "axios";
 import { Table, Button, Modal, Form } from "react-bootstrap";
 import { Eye } from "react-bootstrap-icons";
 import { Link, useNavigate } from 'react-router-dom'; 
+import { BASE_URL } from "../../api";
 
 const PurchaseReportTable = () => {
   const navigate = useNavigate();
@@ -30,7 +31,8 @@ const PurchaseReportTable = () => {
 
   const fetchTransactions = async () => {
     try {
-      const response = await axios.get("http://127.0.0.1:8000/api/v1/financials/transactions_list/");
+     
+      const response = await axios.get(`${BASE_URL}/financials/transactions_list/`);
       setTransactions(response.data);
     } catch (error) {
       setError("Error fetching transactions");
@@ -48,7 +50,8 @@ const PurchaseReportTable = () => {
     if (!paymentAmount || !paymentMode) return;
     
     try {
-      await axios.post(`http://127.0.0.1:8000/api/v1/financials/payments/${selectedTransaction.id}/`, {
+     
+      await axios.post(`${BASE_URL}/financials/payments/${selectedTransaction.id}/`, {
         transaction_id: selectedTransaction.id, 
         amount: paymentAmount,
         payment_mode: paymentMode,
@@ -68,7 +71,8 @@ const PurchaseReportTable = () => {
   const handleDeleteSubmit = async () => {
     if (!currentTransaction || !currentTransaction.id) return;
     try {
-      await axios.delete(`http://127.0.0.1:8000/api/v1/financials/transactions/${currentTransaction.id}/delete/`);
+     
+      await axios.delete(`${BASE_URL}/financials/transactions/${currentTransaction.id}/delete/`);
       fetchTransactions();
       setShowDeleteModal(false);
     } catch (error) {
@@ -78,7 +82,7 @@ const PurchaseReportTable = () => {
 
   const fetchPayments = async (transactionId) => {
     try {
-      const response = await axios.get(`http://127.0.0.1:8000/api/v1/financials/transactions/${transactionId}/payments/`);
+      const response = await axios.get(`${BASE_URL}/financials/transactions/${transactionId}/payments/`);
       setPayments(response.data);
       setShowPaymentsModal(true);
     } catch (error) {

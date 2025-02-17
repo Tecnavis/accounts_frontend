@@ -6,6 +6,7 @@ import { Link } from "react-router-dom";
 import jsPDF from "jspdf";
 import "jspdf-autotable";
 import axios from "axios";
+import { BASE_URL } from "../../api";
 
 const AllPurchaseHeader = () => {
   const { headerBtnOpen, handleHeaderBtn, handleHeaderReset, headerRef } =
@@ -30,10 +31,7 @@ const AllPurchaseHeader = () => {
 
   const downloadPurchasePDF = async () => {
     try {
-      // Fetch transactions data from API
-      const response = await axios.get(
-        "http://127.0.0.1:8000/api/v1/financials/transactions_list/"
-      );
+      const response = await axios.get(`${BASE_URL}/financials/transactions_list/`);
       const transactions = response.data;
 
       // Create a new PDF document

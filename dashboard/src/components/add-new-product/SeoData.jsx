@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import { BASE_URL } from "../../api";
 
 const SeoData = () => {
   const [categories, setCategories] = useState([]);
@@ -21,9 +22,7 @@ const SeoData = () => {
   useEffect(() => {
     const fetchCategories = async () => {
       try {
-        const { data } = await axios.get(
-          "http://127.0.0.1:8000/api/v1/services/categories/"
-        );
+        const { data } = await axios.get(`${BASE_URL}/services/categories/`);
         setCategories(data);
       } catch (err) {
         setError("Failed to fetch categories");
@@ -31,6 +30,7 @@ const SeoData = () => {
     };
     fetchCategories();
   }, []);
+
 
 
   const handleInputChange = (e) => {
@@ -56,10 +56,9 @@ const SeoData = () => {
 
     try {
       const response = await axios.post(
-        `http://127.0.0.1:8000/api/v1/services/categories/${formData.category}/services/create/`,
+        `${BASE_URL}/services/categories/${formData.category}/services/create/`,
         formData
       );
-
       if (response.status === 201) {
         setSuccess(true);
         setFormData({
