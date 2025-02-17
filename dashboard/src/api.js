@@ -1,23 +1,11 @@
-// import axios from 'axios';
-
-// const api = axios.create({
-//     baseURL: 'http://127.0.0.1:8000/api/v1/',  // Base API URL
-//     headers: {
-//         'Content-Type': 'application/json',
-//     },
-// });
-
-// export default api;
-
-
-
-
 import axios from 'axios';
 import Cookies from 'js-cookie';
 
 // Base API configuration
 const api = axios.create({
-  baseURL: process.env.REACT_APP_API_BASE_URL || 'http://127.0.0.1:8000/api/v1/', 
+  baseURL: process.env.REACT_APP_API_BASE_URL || 'https://api.neo.tecnvais.com/api/v1/', 
+  
+  // baseURL: process.env.REACT_APP_API_BASE_URL || 'http://127.0.0.1:8000/api/v1/', 
   headers: { 'Content-Type': 'application/json' },
 });
 
@@ -57,7 +45,9 @@ api.interceptors.response.use(
       try {
         // Refresh Token Request
         const refreshResponse = await axios.post(
-          `${process.env.REACT_APP_API_BASE_URL || 'http://127.0.0.1:8000/api/v1/'}token/users/refresh/`,
+          // `${process.env.REACT_APP_API_BASE_URL || 'http://127.0.0.1:8000/api/v1/'}token/users/refresh/`,
+
+          `${process.env.REACT_APP_API_BASE_URL || 'https://api.neo.tecnvais.com/api/v1/'}token/users/refresh/`,
           { refresh: refreshToken }
         );
 
