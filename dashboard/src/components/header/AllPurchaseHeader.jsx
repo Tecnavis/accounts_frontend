@@ -4,6 +4,7 @@ import { DigiContext } from "../../context/DigiContext";
 import { Link } from "react-router-dom";
 import jsPDF from "jspdf";
 import "jspdf-autotable";
+import * as XLSX from "xlsx"; 
 import axios from "axios";
 import { BASE_URL } from "../../api";
 
@@ -33,12 +34,10 @@ const AllPurchaseHeader = () => {
       const response = await axios.get(`${BASE_URL}/financials/transactions_list/`);
       const transactions = response.data;
 
-      // Create a new PDF document
       const doc = new jsPDF();
       doc.setFontSize(10);
       doc.text("Purchase Report", doc.internal.pageSize.getWidth() / 2, 10, { align: "center" });
 
-      // Define table columns (Added Payment Mode)
       const columns = [
         "Transaction ID",
         "Customer Name",
@@ -50,7 +49,6 @@ const AllPurchaseHeader = () => {
         "Payment Modes",
       ];
 
-      // Define table rows
       const rows = transactions
         .filter((transaction) => transaction.transaction_type === "purchase")
         .map((transaction) => {
@@ -70,20 +68,72 @@ const AllPurchaseHeader = () => {
           ];
         });
 
-      // Add table to PDF
       doc.autoTable({
         head: [columns],
         body: rows,
         startY: 20,
       });
 
-      // Save the PDF
       doc.save("Purchase_Report.pdf");
     } catch (error) {
       console.error("Error generating purchase PDF:", error);
     }
   };
 
+
+  const exportToExcel = async () => {
+    try {
+      const response = await axios.get(`${BASE_URL}/financials/transactions_list/`);
+      const transactions = response.data;
+  
+      if (transactions.length === 0) {
+        alert("No data available to export.");
+        return;
+      }
+  
+      const exportData = transactions
+        .filter((transaction) => transaction.transaction_type === "purchase")
+        .map((transaction) => {
+          const paymentModes = transaction.payments
+            ?.map((payment) => payment.payment_mode)
+            .join(", ") || "N/A";
+  
+          return {
+            "Transaction ID": transaction.transaction_id,
+            "Customer Name": transaction.username,
+            "Service": transaction.service_name,
+            "Price": `Rs ${transaction.service_price}`,
+            "Total Paid": `Rs ${transaction.total_paid}`,
+            "Remaining Amount": `Rs ${transaction.remaining_amount}`,
+            "Sale Date": transaction.sale_date,
+            "Payment Modes": paymentModes,
+          };
+        });
+  
+      const ws = XLSX.utils.json_to_sheet(exportData);
+  
+      const colWidths = [
+        { wpx: 120 }, 
+        { wpx: 150 }, 
+        { wpx: 200 }, 
+        { wpx: 100 },
+        { wpx: 100 }, 
+        { wpx: 150 },
+        { wpx: 120 }, 
+        { wpx: 180 }, 
+      ];
+  
+      ws["!cols"] = colWidths; 
+  
+      const wb = XLSX.utils.book_new();
+      XLSX.utils.book_append_sheet(wb, ws, "Purchases");
+  
+      XLSX.writeFile(wb, "Purchase_Report.xlsx");
+    } catch (error) {
+      console.error("Error exporting to Excel:", error);
+    }
+  };
+  
   return (
     <div className="panel-header">
       <h5>Purchases</h5>
@@ -96,7 +146,10 @@ const AllPurchaseHeader = () => {
             <i className="fa-light fa-plus"></i> Add New
           </Link>
           <Button className="btn btn-sm btn-success ms-2" onClick={downloadPurchasePDF}>
-            <i className="fa fa-download"></i> Download Purchase PDF
+            <i className="fa fa-download"></i> PDF
+          </Button>
+          <Button className="btn btn-sm btn-info ms-2" onClick={exportToExcel}>
+            <i className="fa fa-file-excel"></i> Excel
           </Button>
         </div>
       </div>
