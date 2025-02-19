@@ -20,6 +20,7 @@ const AllCustomerTable = () => {
     try {
      
       const response = await axios.get(`${BASE_URL}/financials/transactions_list/`);
+      console.log(response.data);
       
     
       const salesTransactions = response.data.filter(
@@ -36,6 +37,9 @@ const AllCustomerTable = () => {
           uniqueCustomers.push({
             username: transaction.username,
             billing_address: transaction.billing_address || "N/A",
+            email: transaction.email || "N/A",
+            contact_number: transaction.contact_number || "N/A",
+            
           });
         }
       });
@@ -79,6 +83,8 @@ const AllCustomerTable = () => {
             {currentData.map((customer, index) => (
               <tr key={index}>
                 <td>{customer.username}</td>
+                <td>{customer.email}</td>
+                <td>{customer.contact_number}</td>
                 <td>{customer.billing_address}</td>
               </tr>
             ))}

@@ -50,7 +50,7 @@ const SaleData = () => {
     useEffect(() => {
         const fetchServices = async () => {
             try {
-                const response = await axios.get(`${BASE_URL}/services/`);
+                const response = await axios.get(`${BASE_URL}/services/services/`);
                 setServices(response.data);
             } catch (error) {
                 console.error("Error fetching services:", error);
@@ -265,65 +265,6 @@ const SaleData = () => {
                         </select>
                     </div>
                 </div>
-
-                {/* <div className="row g-3 mb-3">
-                <label htmlFor="country" className="col-md-2 col-form-label col-form-label-sm">
-                    Country
-                </label>
-                <div className="col-md-6">
-                    <select
-                        id="country"
-                        name="country"
-                        className="form-control form-control-sm"
-                        value={formData.country}
-                        onChange={(e) => {
-                            const selectedCountry = e.target.value;
-                            setFormData({ ...formData, country: selectedCountry, tax_rate: "" });
-                        }}
-                    >
-                        <option value="">Select Country</option>
-                        <option value="india">India</option>
-                        <option value="saudi">Saudi Arabia</option>
-                    </select>
-                </div>
-            </div>
-            {formData.country && (
-                    <div className="row g-3 mb-3">
-                        <label htmlFor="tax_rate" className="col-md-2 col-form-label col-form-label-sm">
-                            {formData.country === "india" ? "GST Rate" : "VAT Rate"}
-                        </label>
-                        <div className="col-md-6">
-                            <select
-                                id="tax_rate"
-                                name="tax_rate"
-                                className="form-control form-control-sm"
-                                value={formData.tax_rate}
-                                onChange={(e) => setFormData({ ...formData, tax_rate: e.target.value })}
-                            >
-                                <option value="">Select {formData.country === "india" ? "GST" : "VAT"}</option>
-                                {(formData.country === "india"
-                                    ? [
-                                        { value: "GST_5", label: "5% GST" },
-                                        { value: "GST_12", label: "12% GST" },
-                                        { value: "GST_18", label: "18% GST" },
-                                        { value: "GST_28", label: "28% GST" },
-                                    ]
-                                    : [
-                                        { value: "standard", label: "Standard VAT (15%)" },
-                                        { value: "zero_rated", label: "Zero-Rated VAT (0%)" },
-                                        { value: "exempt", label: "Exempt VAT (No VAT Applied)" },
-                                    ]
-                                ).map((tax) => (
-                                    <option key={tax.value} value={tax.value}>
-                                        {tax.label}
-                                    </option>
-                                ))}
-                            </select>
-                        </div>
-                    </div>
-                )} */}
-
-
 
 <div className="row g-3 mb-3">
     <label htmlFor="country" className="col-md-2 col-form-label col-form-label-sm">

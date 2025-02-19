@@ -45,6 +45,7 @@ import Icon from "./pages/Icon"
 import Map from "./pages/Map"
 import FileManager from "./pages/FileManager"
 import Layout from "./components/layout/Layout"
+import PublicLayout from "./components/layout/PublicLayout"
 import Login3 from "./pages/Login3"
 import Error400 from "./pages/Error400"
 import Error403 from "./pages/Error403"
@@ -67,10 +68,9 @@ import ProtectedRoute from '../src/protectedroute/ProtectedRoute';
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(!!Cookies.get('access_token'));
 
-  // Keep checking for auth changes (like logout)
   useEffect(() => {
     const checkAuth = () => setIsAuthenticated(!!Cookies.get('access_token'));
-    window.addEventListener('storage', checkAuth); // Listen for auth changes
+    window.addEventListener('storage', checkAuth); 
 
     return () => window.removeEventListener('storage', checkAuth);
   }, []);
@@ -78,22 +78,18 @@ function App() {
   return (
     <Router>
       <Routes>
-        <Route element={<Layout />}>
-          <Route path="/registration" element={<Registration />} />
-          <Route path="/login" element={<Login/>}/>
-          <Route path="/login2" element={<Login2 setIsAuthenticated={setIsAuthenticated} />} />
-
-          <Route path="/allSales" element={<AllSales />} />
-
-          {/* Protected Routes */}
+          <Route element={<PublicLayout />}>
+              <Route path="/registration" element={<Registration />} />
+              <Route path="/" element={<Login2 setIsAuthenticated={setIsAuthenticated} />} />
+          </Route>        
           <Route element={<ProtectedRoute isAuthenticated={isAuthenticated} />}>
-            <Route path="/" element={<CrmDashboard />} />
-            <Route path="/inventorydashboard" element={<CrmDashboard />} />
+          <Route element={<Layout />}>
+            <Route path="/dashboard" element={<CrmDashboard />} />
             <Route path="/allProduct" element={<AllProduct />} />
             <Route path="/category" element={<Category />} />
             <Route path="/addNewProduct" element={<AddNewProduct />} />
             <Route path="/purchaseditem" element={<Customer />} />
-            {/* <Route path="/allSales" element={<AllSales />} /> */}
+            <Route path="/allSales" element={<AllSales />} />
             <Route path="/addSales" element={<AddSales />} />
             <Route path="/allpurchase" element={<AllPurchase />} />
             <Route path="/addPurchase" element={<AddPurchase />} />
@@ -103,12 +99,11 @@ function App() {
             <Route path="/allEmployee" element={<AllEmployee />} />
             <Route path="/invoice/:id" element={<Invoices />} />
           </Route>
-        </Route>
+        </Route>        
       </Routes>
     </Router>
   );
 }
-
 export default App;
 
 

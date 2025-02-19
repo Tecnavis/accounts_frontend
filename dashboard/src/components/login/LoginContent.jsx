@@ -30,6 +30,7 @@ const LoginContent = () => {
                 placeholder="Username or email address"
               />
             </div>
+            
             <div className="input-group mb-20">
               <span className="input-group-text">
                 <i className="fa-regular fa-lock"></i>
@@ -47,6 +48,8 @@ const LoginContent = () => {
                 <i className="fa-duotone fa-eye"></i>
               </Link>
             </div>
+
+
             <div className="d-flex justify-content-between mb-30">
               <div className="form-check">
                 <input

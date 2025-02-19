@@ -140,7 +140,8 @@ const HeaderProfile = () => {
     const handleLogout = () => {
       Cookies.remove('access_token');  // Remove access token
       Cookies.remove('refresh_token'); // Remove refresh token
-      navigate('/login'); // Redirect to login
+      Cookies.remove('user_role');     // Remove user role
+      navigate('/'); // Redirect to login
     };
 
   return (

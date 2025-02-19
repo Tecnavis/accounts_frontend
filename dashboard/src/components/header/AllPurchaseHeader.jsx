@@ -1,4 +1,3 @@
-
 import React, { useContext, useState } from "react";
 import { Form, Button } from "react-bootstrap";
 import { DigiContext } from "../../context/DigiContext";
@@ -87,7 +86,7 @@ const AllPurchaseHeader = () => {
 
   return (
     <div className="panel-header">
-      <h5>Sales</h5>
+      <h5>Purchases</h5>
       <div className="btn-box d-flex flex-wrap gap-2">
         <div id="tableSearch">
           <Form.Control type="text" placeholder="Search..." />

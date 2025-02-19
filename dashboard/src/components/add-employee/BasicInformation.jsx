@@ -1,14 +1,16 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { BASE_URL } from "../../api";
+import Cookies from 'js-cookie';
+
 
 const BasicInformation = () => {
   const [formData, setFormData] = useState({
     employee_id: '',
-    first_name: '',
-    last_name: '',
+    username: '',
     email: '',
     contact_number: '',
+    password: '',
   });
 
   const [loading, setLoading] = useState(false);
@@ -29,6 +31,7 @@ const BasicInformation = () => {
       const response = await axios.post(`${BASE_URL}/users/staffs/create/`, formData, {
         headers: {
           'Content-Type': 'application/json',
+           "Authorization": `Bearer ${Cookies.get("access_token")}` 
         },
       });
 
@@ -38,6 +41,7 @@ const BasicInformation = () => {
         username: '',
         email: '',
         contact_number: '',
+        password: '',
       });
     } catch (error) {
       setMessage('Error creating staff user. Please try again.');
@@ -96,6 +100,17 @@ const BasicInformation = () => {
                   name="contact_number"
                   className="form-control form-control-sm"
                   value={formData.contact_number}
+                  onChange={handleChange}
+                  required
+                />
+              </div>
+              <div className="col-xxl-3 col-lg-4 col-sm-6">
+                <label className="form-label">Password</label>
+                <input
+                  type="password"
+                  name="password"
+                  className="form-control form-control-sm"
+                  value={formData.password}
                   onChange={handleChange}
                   required
                 />

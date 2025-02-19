@@ -100,7 +100,7 @@ const ProfileRightSidebar = () => {
             <i className="fa-light fa-gear"></i>
             <span>Settings</span>
           </Link>
-          <Link to="/login">
+          <Link to="/">
             <i className="fa-light fa-power-off"></i>
             <span>Logout</span>
           </Link>

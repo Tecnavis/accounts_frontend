@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { Button } from 'react-bootstrap';
-import { BASE_URL } from "../../api";
+import { BASE_URL } from "../api";
 
 const InvoicePage = () => {
   const { id } = useParams();
@@ -10,7 +10,7 @@ const InvoicePage = () => {
   const [invoiceData, setInvoiceData] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  
+
   useEffect(() => {
     fetchInvoiceData();
   }, [id]);

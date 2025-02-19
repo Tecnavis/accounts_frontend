@@ -3,8 +3,10 @@ import { useNavigate } from 'react-router-dom';
 import Footer from '../footer/Footer';
 import { Link } from 'react-router-dom';
 import Cookies from 'js-cookie';
+import { BASE_URL } from "../../api";
 
 const LoginContent2 = () => {
+  
   const [formData, setFormData] = useState({
     email: '',
     password: '',
@@ -25,24 +27,30 @@ const LoginContent2 = () => {
     setError('');
 
     try {
-      const response = await fetch('https://api.neo.tecnvais.com/users/login/', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(formData),
-      });
 
+      const response = await fetch(`${BASE_URL}/users/login/`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        
+      },
+        body: JSON.stringify(formData),
+      });  
       const data = await response.json();
 
       if (response.ok) {
         // Store tokens in cookies
-        Cookies.set('access_token', data.access_token, { expires: 1 }); // 1 day
-        Cookies.set('refresh_token', data.refresh_token, { expires: 7 }); // 7 days
+        Cookies.set('access_token', data.access_token, { expires: 1 }); 
+        Cookies.set('refresh_token', data.refresh_token, { expires: 7 }); 
+        // In LoginContent2.js, line 47
+       Cookies.set('user_role', data.role.toUpperCase(), { expires: 1 });
+        
 
-        // Redirect to dashboard/home
-        navigate('/');
+        navigate('/dashboard');
       } else {
         setError(data.detail || 'Invalid login credentials');
       }
+
     } catch (err) {
       setError('Something went wrong. Please try again.');
     } finally {
@@ -89,20 +97,11 @@ const LoginContent2 = () => {
 
             {error && <p className="text-danger">{error}</p>}
 
-            <div className="d-flex justify-content-between mb-30">
-              <div className="form-check">
-                <input className="form-check-input" type="checkbox" id="loginCheckbox" />
-                <label className="form-check-label text-white">Remember Me</label>
-              </div>
-              <Link to="/resetPassword" className="text-white fs-14">Forgot Password?</Link>
-            </div>
             <button type="submit" className="btn btn-primary w-100 login-btn" disabled={loading}>
               {loading ? 'Logging in...' : 'Login'}
             </button>
           </form>
-          <div className="other-option">
-            <p className="mb-0">Don't have an account? <Link to="/registration2" className="text-white text-decoration-underline">Create</Link></p>
-          </div>
+          
         </div>
       </div>
       <Footer />

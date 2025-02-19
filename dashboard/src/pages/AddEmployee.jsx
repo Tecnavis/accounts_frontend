@@ -24,7 +24,7 @@ const AddEmployee = () => {
             {/* <BiologicalInfo/> */}
             {/* <EmergencyContact/> */}
             {/* <LoginInfo/> */}
-            <SaveBtn/>
+            {/* <SaveBtn/> */}
         </div>
         <Footer/>
     </div>

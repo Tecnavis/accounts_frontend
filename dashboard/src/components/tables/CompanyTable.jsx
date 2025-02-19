@@ -110,6 +110,7 @@ const AllCustomerTable = () => {
   const fetchCustomers = async () => {
     try {
       const response = await axios.get(`${BASE_URL}/financials/transactions_list/`);
+      console.log(response.data);
       
       // Filter transactions where transaction_type is "sale"
       const salesTransactions = response.data.filter(
@@ -169,6 +170,8 @@ const AllCustomerTable = () => {
             {currentData.map((customer, index) => (
               <tr key={index}>
                 <td>{customer.username}</td>
+                <td>{customer.email}</td>
+                <td>{customer.contact_number}</td>
                 <td>{customer.billing_address}</td>
               </tr>
             ))}
