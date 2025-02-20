@@ -5,10 +5,8 @@ import { OverlayScrollbarsComponent } from 'overlayscrollbars-react';
 import PaginationSection from './PaginationSection';
 import { BASE_URL } from "../../api";
 
-
 const AllProductTable = ({ categoryId }) => {
     const [categories, setCategories] = useState([]);
-
     const [services, setServices] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
@@ -21,13 +19,11 @@ const AllProductTable = ({ categoryId }) => {
     useEffect(() => {
         fetchServices();
         fetchCategories();
-       
     }, [categoryId]);
 
     const fetchServices = async () => {
         setLoading(true);
         try {
-       
             const response = await axios.get(`${BASE_URL}/services/services`);
             setServices(response.data);
         } catch (err) {
@@ -41,14 +37,12 @@ const AllProductTable = ({ categoryId }) => {
         try {
             const response = await axios.get(`${BASE_URL}/services/categories/`);
             setCategories(response.data);
-            console.log(response.data);
         } catch (error) {
             setError('Failed to fetch categories');
         } finally {
             setLoading(false);
         }
     };
-
 
     const handleEdit = (service) => {
         setSelectedService(service);
@@ -59,25 +53,40 @@ const AllProductTable = ({ categoryId }) => {
         setSelectedService(service);
         setShowDeleteModal(true);
     };
-  
 
-    const updateService = async (updatedService) => {
+    const updateService = async (serviceData, setMessage, handleClose) => {
         try {
-            await axios.put(`${BASE_URL}/services/${updatedService.id}/update/`, updatedService);
+            if (!serviceData.id || !serviceData.category_id) return;
 
-            fetchServices();
-            setShowEditModal(false);
+            const response = await axios.put(
+                `${BASE_URL}/services/categories/${serviceData.category_id}/services/${serviceData.id}/update/`,
+                serviceData
+            );
+
+            if (response.status === 200) {
+                setMessage({ type: "success", text: "Service updated successfully" });
+                if (typeof handleClose === "function") {
+                    handleClose();
+                    fetchServices(); // Refresh services
+                }
+            }
         } catch (error) {
-            alert("Failed to update service");
+            setMessage({ type: "error", text: "Failed to update service" });
         }
     };
 
     const deleteService = async () => {
+        if (!selectedService) {
+            alert("No service selected for deletion.");
+            return;
+        }
+
         try {
-            await axios.delete(`${BASE_URL}/categories/${categoryId}/services/${selectedService.id}/delete/`);
+            await axios.delete(`<span class="math-inline">\{BASE\_URL\}/services/services/</span>{selectedService.id}/delete/`);
             fetchServices();
             setShowDeleteModal(false);
         } catch (error) {
+            console.error("Error deleting service:", error);
             alert("Failed to delete service");
         }
     };
@@ -88,8 +97,6 @@ const AllProductTable = ({ categoryId }) => {
     const paginate = (pageNumber) => setCurrentPage(pageNumber);
     const totalPages = Math.ceil(services.length / dataPerPage);
     const pageNumbers = [...Array(totalPages).keys()].map(i => i + 1);
-
-
 
     return (
         <>
@@ -106,7 +113,6 @@ const AllProductTable = ({ categoryId }) => {
                                 <th>Category</th>
                                 <th>Price</th>
                                 <th>Vat type</th>
-                                {/* <th>Offer Price</th> */}
                                 <th>Vat amount</th>
                                 <th>total price</th>
                                 <th>Status</th>
@@ -122,13 +128,8 @@ const AllProductTable = ({ categoryId }) => {
                                     <td>{service.category_name}</td>
                                     <td>{service.price}</td>
                                     <td>{service.vat_type}</td>
-                                    {/* <td>{service.offerPrice}</td> */}
-                                    
-                                    
                                     <td>{service.vat_amount}</td>
                                     <td>{service.total_price}</td>
-                                    {/* <td>{service.vat_rate}</td> */}
-
                                     <td>{service.is_active ? "Active" : "Inactive"}</td>
                                     <td>
                                         <div className="btn-box">
@@ -150,6 +151,7 @@ const AllProductTable = ({ categoryId }) => {
                     handleClose={() => setShowEditModal(false)}
                     service={selectedService}
                     updateService={updateService}
+                    fetchServices={fetchServices} // Pass fetchServices
                 />
             )}
 
@@ -165,17 +167,19 @@ const AllProductTable = ({ categoryId }) => {
     );
 };
 
-const EditServiceModal = ({ show, handleClose, service, updateService }) => {
+const EditServiceModal = ({ show, handleClose, service, updateService, fetchServices }) => {
     const [formData, setFormData] = useState({ ...service });
     const [categories, setCategories] = useState([]);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
+    const [message, setMessage] = useState(null);
 
     useEffect(() => {
         if (show) {
             fetchCategories();
             if (service) {
                 setFormData({ ...service });
+                setMessage(null);
             }
         }
     }, [show, service]);
@@ -192,7 +196,6 @@ const EditServiceModal = ({ show, handleClose, service, updateService }) => {
                 throw new Error("Unexpected API response format");
             }
         } catch (error) {
-            console.error("Error fetching categories:", error);
             setError("Failed to load categories");
         } finally {
             setLoading(false);
@@ -203,9 +206,18 @@ const EditServiceModal = ({ show, handleClose, service, updateService }) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        updateService(formData);
+        setMessage(null);
+        try {
+            await updateService(formData, setMessage, handleClose);
+            if (message && message.type === "success") {
+                fetchServices();
+                handleClose();
+            }
+        } catch (err) {
+            setMessage({ type: "error", text: "Failed to update service" });
+        }
     };
 
     return (
@@ -214,43 +226,28 @@ const EditServiceModal = ({ show, handleClose, service, updateService }) => {
                 <Modal.Title>Edit Service</Modal.Title>
             </Modal.Header>
             <Modal.Body>
+                {message && (
+                    <Alert variant={message.type === "success" ? "success" : "danger"}>
+                        {message.text}
+                    </Alert>
+                )}
                 <Form onSubmit={handleSubmit}>
                     <Form.Group>
                         <Form.Label>Name</Form.Label>
-                        <Form.Control
-                            type="text"
-                            name="name"
-                            value={formData.name}
-                            onChange={handleChange}
-                            required
-                        />
+                        <Form.Control type="text" name="name" value={formData.name} onChange={handleChange} required />
                     </Form.Group>
-
                     <Form.Group>
                         <Form.Label>Description</Form.Label>
-                        <Form.Control
-                            as="textarea"
-                            name="description"
-                            value={formData.description}
-                            onChange={handleChange}
-                            required
-                        />
+                        <Form.Control as="textarea" name="description" value={formData.description} onChange={handleChange} required />
                     </Form.Group>
-
                     <Form.Group>
                         <Form.Label>Category</Form.Label>
-                        {loading ? (
-                            <p>Loading categories...</p>
+                        {loading ? (<p>Loading categories...</p>
+
                         ) : error ? (
                             <p style={{ color: "red" }}>{error}</p>
                         ) : (
-                            <Form.Control
-                                as="select"
-                                name="category_id"
-                                value={formData.category_id || ""}
-                                onChange={handleChange}
-                                required
-                            >
+                            <Form.Control as="select" name="category_id" value={formData.category_id || ""} onChange={handleChange} required>
                                 <option value="">Select a category</option>
                                 {categories.map((category) => (
                                     <option key={category.id} value={category.id}>
@@ -260,25 +257,13 @@ const EditServiceModal = ({ show, handleClose, service, updateService }) => {
                             </Form.Control>
                         )}
                     </Form.Group>
-
                     <Form.Group>
                         <Form.Label>Price</Form.Label>
-                        <Form.Control
-                            type="number"
-                            name="price"
-                            value={formData.price}
-                            onChange={handleChange}
-                            required
-                        />
+                        <Form.Control type="number" name="price" value={formData.price} onChange={handleChange} required />
                     </Form.Group>
-
                     <Modal.Footer>
-                        <Button variant="secondary" onClick={handleClose}>
-                            Cancel
-                        </Button>
-                        <Button type="submit" variant="primary">
-                            Save Changes
-                        </Button>
+                        <Button variant="secondary" onClick={handleClose}>Cancel</Button>
+                        <Button type="submit" variant="primary">Save Changes</Button>
                     </Modal.Footer>
                 </Form>
             </Modal.Body>
@@ -286,8 +271,6 @@ const EditServiceModal = ({ show, handleClose, service, updateService }) => {
     );
 };
 
-
-// delete modal
 const DeleteServiceModal = ({ show, handleClose, handleDelete, service }) => {
     return (
         <Modal show={show} onHide={handleClose}>
@@ -306,5 +289,3 @@ const DeleteServiceModal = ({ show, handleClose, handleDelete, service }) => {
 };
 
 export default AllProductTable;
-
-

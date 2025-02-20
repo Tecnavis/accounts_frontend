@@ -22,11 +22,11 @@ const CrmDashboardMainContent = () => {
             <UpcomingProjects/>
             <PendingWork/>
             <div className="col-xl-8 col-lg-7">
-              <Invoices/>
+              {/* <Invoices/> */}
             </div>
-            <MyTasks/>
-            <NoticeBoard/>
-            <Deadlines/>
+            {/* <MyTasks/> */}
+            {/* <NoticeBoard/> */}
+            {/* <Deadlines/> */}
         </div>
 
         <Footer/>

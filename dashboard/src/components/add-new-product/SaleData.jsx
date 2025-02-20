@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Button, Modal } from "react-bootstrap";
 import axios from "axios";
 import { BASE_URL } from "../../api";
+import Cookies from "js-cookie";
 
 const SaleData = () => {
     const [services, setServices] = useState([]);
@@ -32,6 +33,13 @@ const SaleData = () => {
         vat_type: "",
         
     });
+
+
+    const getAuthHeader = () => {
+        const token = Cookies.get('access_token');
+        return token ? { Authorization: `Bearer ${token}` } : {};
+    };
+
 
     const PAYMENT_STATUS_CHOICES = [
         { value: "paid", label: "Paid" },
@@ -97,7 +105,16 @@ const SaleData = () => {
             transaction_type: formData.transaction_type,
             sale_date: formData.sale_date,
             remarks: formData.remarks
-        });
+        },
+        {
+            headers: {
+                ...getAuthHeader()
+            }
+        }
+    
+    
+    
+    );
 
         if (amountPaid > 0) {
             try {

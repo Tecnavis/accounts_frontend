@@ -4,6 +4,7 @@ import Footer from '../footer/Footer';
 import { Link } from 'react-router-dom';
 import Cookies from 'js-cookie';
 import { BASE_URL } from "../../api";
+import { Cookie } from 'react-bootstrap-icons';
 
 const LoginContent2 = () => {
   
@@ -44,8 +45,8 @@ const LoginContent2 = () => {
         Cookies.set('refresh_token', data.refresh_token, { expires: 7 }); 
         // In LoginContent2.js, line 47
        Cookies.set('user_role', data.role.toUpperCase(), { expires: 1 });
+      //  Cookies.set('user_id', data.user_id, { expires: 1 });
         
-
         navigate('/dashboard');
       } else {
         setError(data.detail || 'Invalid login credentials');
