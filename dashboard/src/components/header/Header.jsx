@@ -132,12 +132,12 @@ const Header = () => {
             >
               <i className="fa-light fa-ellipsis-vertical"></i>
             </button>
-            <button
+            {/* <button
               className="header-btn theme-settings-btn d-lg-none"
               onClick={handleSettingsToggle}
             >
               <i className="fa-light fa-gear"></i>
-            </button>
+            </button> */}
             <HeaderProfile />
           </div>
         </div>

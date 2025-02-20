@@ -25,7 +25,7 @@ const AllProductHeader = () => {
 
   return (
     <div className="panel-header">
-        <h5>All Products</h5>
+        <h5>All Services</h5>
         <div className="btn-box d-flex flex-wrap gap-2">
             <div id="tableSearch">
                 <Form.Control type='text' placeholder='Seach...'/>
