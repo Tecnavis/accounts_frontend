@@ -27,7 +27,7 @@ const DashboardPart = () => {
         </li>
         <li className="sidebar-dropdown-item">
           <NavLink
-            to="/inventorydashboard"
+            to="/dashboard"
             className="sidebar-link"
           >
             <span className="nav-icon">

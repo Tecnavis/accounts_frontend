@@ -1,8 +1,11 @@
 import React, { useContext} from 'react';
 import { NavLink, Link } from 'react-router-dom';
 import { DigiContext } from '../../context/DigiContext';
+import Cookies from "js-cookie";
 
 const AppsPart = () => {
+
+  const userRole = Cookies.get("user_role") || ""; 
   const { 
     state, 
     toggleCrmDropdown, 
@@ -63,49 +66,18 @@ const AppsPart = () => {
             id="crmDropdown"
            
           >
-            {/* <li className="sidebar-dropdown-item">
-              <NavLink to="/stocklist" className="sidebar-link" onClick={handleSubNavLinkClick}>
-                Stock List Report
-              </NavLink>
-            </li> */}
-
-
-
-
 
             <li className="sidebar-dropdown-item">
               <NavLink to="/allSales" className="sidebar-link" onClick={handleSubNavLinkClick}>
                 Sale Report 
               </NavLink>
             </li>
-
-            
+  
             <li className="sidebar-dropdown-item">
               <NavLink to="/allPurchase" className="sidebar-link" onClick={handleSubNavLinkClick}>
                 Purchase Report 
               </NavLink>
             </li>
-
-
-
-
-
-
-            {/* <li className="sidebar-dropdown-item">
-              <NavLink to="/returnproduct" className="sidebar-link" onClick={handleSubNavLinkClick}>
-                Return Products Report
-              </NavLink>
-            </li> */}
-            {/* <li className="sidebar-dropdown-item">
-              <NavLink to="/customerorders" className="sidebar-link" onClick={handleSubNavLinkClick}>
-               Customer Order Management
-              </NavLink>
-            </li> */}
-            {/* <li className="sidebar-dropdown-item">
-              <NavLink to="/salesorders" className="sidebar-link" onClick={handleSubNavLinkClick}>
-               Sales Management
-              </NavLink>
-            </li> */}
 
           </ul>
         </li>
@@ -136,21 +108,19 @@ const AppsPart = () => {
                 All Suppliers
               </NavLink>
             </li>
-            <li className="sidebar-dropdown-item">
+            {userRole === "ADMIN" && (
+              <li className="sidebar-dropdown-item">
+                <NavLink to="/allEmployee" className="sidebar-link">
+                  All Employee
+                </NavLink>
+              </li>
+            )}
+            {/* <li className="sidebar-dropdown-item">
               <NavLink to="/allEmployee" className="sidebar-link" onClick={handleSubNavLinkClick}>
                 All Employee
               </NavLink>
-            </li>
-            {/* <li className="sidebar-dropdown-item">
-              <NavLink to="/addEmployee" className="sidebar-link" onClick={handleSubNavLinkClick}>
-                Add Employee
-              </NavLink>
             </li> */}
-            {/* <li className="sidebar-dropdown-item">
-              <NavLink to="/attendance" className="sidebar-link" onClick={handleSubNavLinkClick}>
-                Attendance
-              </NavLink>
-            </li> */}
+           
           </ul>
         </li>
         <li className="sidebar-dropdown-item">
@@ -171,11 +141,7 @@ const AppsPart = () => {
             id="ecommerceDropdown"
 
           >
-            {/* <li className="sidebar-dropdown-item">
-              <NavLink to="/addNewProduct" className="sidebar-link" onClick={handleSubNavLinkClick}>
-                Add Product
-              </NavLink>
-            </li> */}
+        
             <li className="sidebar-dropdown-item">
               <NavLink to="/allProduct" className="sidebar-link" onClick={handleSubNavLinkClick}>
                All Service
@@ -189,53 +155,6 @@ const AppsPart = () => {
 
           </ul>
         </li>
-
-        {/* <li className="sidebar-dropdown-item">
-          <Link
-            role="button"
-            className={`sidebar-link has-sub ${isAccountsDropdownOpen ? 'show' : ''}`}
-            onClick={toggleAccountsDropdown}
-          >
-            <span className="nav-icon">
-              <i className="fa-light fa-user-tie"></i>
-            </span>{' '}
-            <span className="sidebar-txt">Finanace</span>
-          </Link>
-          <ul
-            className={`sidebar-dropdown-menu ${
-              isAccountsDropdownOpen && isSubDropdownOpen ? 'd-block' : ''
-            }`}
-            id="accountsDropdown"
-          >
-{/*   .................................   */}
-        {/* <li className="sidebar-dropdown-item">
-              <NavLink to="/allProduct" className="sidebar-link" onClick={handleSubNavLinkClick}>
-                Sale
-              </NavLink>
-            </li>
-
-          <li className="sidebar-dropdown-item">
-            <NavLink to="/leads" className="sidebar-link" onClick={handleSubNavLinkClick}>
-              Purchase
-            </NavLink>
-          </li>
-
-          </ul>
-        </li>  */}
-
-        {/* <li className="sidebar-dropdown-item">
-        </li>
-        <li className="sidebar-dropdown-item">
-        </li> */}
-        
-        {/* <li className="sidebar-dropdown-item">
-          <NavLink to="/invoices" className="sidebar-link">
-            <span className="nav-icon">
-              <i className="fa-light fa-file-invoice"></i>
-            </span>{' '}
-            <span className="sidebar-txt">Invoices</span>
-          </NavLink>
-        </li> */}
       </ul>
     </li>
   );
