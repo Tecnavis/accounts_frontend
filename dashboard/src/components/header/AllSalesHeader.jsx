@@ -12,7 +12,6 @@ const AllSalesHeader = () => {
   const { headerBtnOpen, handleHeaderBtn, handleHeaderReset, headerRef } =
     useContext(DigiContext);
 
-
     const downloadSalesPDF = async () => {
     try {
       const response = await axios.get(`${BASE_URL}/financials/transactions_list/`);
@@ -57,7 +56,6 @@ const AllSalesHeader = () => {
         body: rows,
         startY: 20,
       });
-
 
       doc.save("Sales_Report.pdf");
     } catch (error) {
@@ -107,12 +105,61 @@ const AllSalesHeader = () => {
       const wb = XLSX.utils.book_new();
       XLSX.utils.book_append_sheet(wb, ws, "Sales Data");
 
-      
       XLSX.writeFile(wb, "Sales_Report.xlsx");
     } catch (error) {
       console.error("Error exporting Sales Excel:", error);
     }
   };
+  const uploadSalesExcel = async (event) => {
+    const file = event.target.files[0];
+    if (!file) return;
+  
+    const formData = new FormData();
+    formData.append("excel_file", file);  // Ensure key matches backend
+  
+    try {
+      const response = await axios.post(
+        `${BASE_URL}/financials/import-excel/`,
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
+      alert("Sales data imported successfully!");
+    } catch (error) {
+      console.error("Error uploading sales data:", error.response?.data || error);
+      alert("Error uploading sales data");
+    }
+  };
+  
+
+
+  // const uploadSalesExcel = async (event) => {
+  //   const file = event.target.files[0];
+  //   if (!file) return;
+  
+  //   const reader = new FileReader();
+  //   reader.onload = async (e) => {
+  //     const data = new Uint8Array(e.target.result);
+  //     const workbook = XLSX.read(data, { type: "array" });
+  
+  //     const sheetName = workbook.SheetNames[0]; 
+  //     const sheet = workbook.Sheets[sheetName];
+  //     const jsonData = XLSX.utils.sheet_to_json(sheet);
+  
+  //     try {
+  //       const response = await axios.post(`${BASE_URL}/financials/import-excel/`, jsonData);
+  //       alert("Sales data imported successfully!");
+  //     } catch (error) {
+  //       console.error("Error uploading sales data:", error);
+  //     }
+  //   };
+  
+  //   reader.readAsArrayBuffer(file);
+  // };
+  
 
   return (
     <div className="panel-header">
@@ -131,6 +178,12 @@ const AllSalesHeader = () => {
           <Button className="btn btn-sm btn-info ms-2" onClick={downloadSalesExcel}>
             <i className="fa fa-file-excel"></i>Excel
           </Button>
+
+          <input type="file" accept=".xlsx, .xls" onChange={uploadSalesExcel} className="d-none" id="uploadExcel" />
+          <label htmlFor="uploadExcel" className="btn btn-sm btn-success ms-2">
+            <i className="fa fa-upload"></i> Import
+          </label>
+
         </div>
       </div>
     </div>
