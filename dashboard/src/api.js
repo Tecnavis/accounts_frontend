@@ -3,8 +3,8 @@ import Cookies from "js-cookie";
 
 // Use `import.meta.env` for environment variables in Vite
 export const BASE_URL =
-  // import.meta.env.VITE_API_BASE_URL || "https://api.neo.tecnavis.com/api/v1";
-  import.meta.env.VITE_API_BASE_URL || " http://127.0.0.1:8000/api/v1";
+  import.meta.env.VITE_API_BASE_URL || "https://api.neo.tecnavis.com/api/v1";
+  // import.meta.env.VITE_API_BASE_URL || " http://127.0.0.1:8000/api/v1";
 
 // Base API configuration
 const api = axios.create({
