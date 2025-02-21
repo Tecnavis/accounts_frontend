@@ -48,14 +48,6 @@ const EditProfileMainContent = () => {
                         </Nav.Link>
                         </Nav.Item>
                         <Nav.Item>
-                        <Nav.Link
-                            eventKey="other"
-                            className={`btn btn-sm btn-outline-primary ${
-                            activeTab === 'other' ? 'active' : ''
-                            }`}
-                        >
-                           Other Settings
-                        </Nav.Link>
                         </Nav.Item>
                         </Nav>
                     </div>
@@ -67,9 +59,7 @@ const EditProfileMainContent = () => {
                             <Tab.Pane eventKey="change" className={`tab-pane ${activeTab === 'change' ? 'show active' : ''}`}>
                                 <ChangePasswordContent/>
                             </Tab.Pane>
-                            <Tab.Pane eventKey="other" className={`tab-pane ${activeTab === 'other' ? 'show active' : ''}`}>
-                                <OtherSettingsContent/>
-                            </Tab.Pane>
+                            
                         </Tab.Content>
                     </div>
                 </div>

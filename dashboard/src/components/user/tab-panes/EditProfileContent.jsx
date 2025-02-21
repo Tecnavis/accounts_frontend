@@ -38,7 +38,7 @@ const EditProfileContent = () => {
                   />
                 </div>
               </div>
-              <div className="col-sm-6">
+              {/* <div className="col-sm-6">
                 <div className="input-group">
                   <span className="input-group-text">
                     <i className="fa-light fa-at" />
@@ -51,12 +51,12 @@ const EditProfileContent = () => {
                     readOnly
                   />
                 </div>
-              </div>
+              </div> */}
               <div className="col-12">
                 <textarea
                     className="form-control h-150-p"
                     placeholder="Biography"
-                    value="It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets"
+                    value="#Biography,It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets"
                     readOnly
                 />
               </div>
@@ -83,7 +83,7 @@ const EditProfileContent = () => {
               />
             </div>
           </div>
-          <div className="col-md-4 col-sm-6">
+          {/* <div className="col-md-4 col-sm-6">
             <div className="input-group flex-nowrap">
               <span className="input-group-text">
                 <i className="fa-light fa-user-tie" />
@@ -100,8 +100,8 @@ const EditProfileContent = () => {
                 </option>
               </select>
             </div>
-          </div>
-          <div className="col-md-4 col-sm-6">
+          </div> */}
+          {/* <div className="col-md-4 col-sm-6">
             <div className="input-group flex-nowrap">
               <span className="input-group-text">
                 <i className="fa-light fa-circle-check" />
@@ -114,7 +114,7 @@ const EditProfileContent = () => {
                 <option value="1">Disable</option>
               </select>
             </div>
-          </div>
+          </div> */}
           <div className="col-md-4 col-sm-6">
             <div className="input-group">
               <span className="input-group-text">
@@ -143,7 +143,7 @@ const EditProfileContent = () => {
               />
             </div>
           </div>
-          <div className="col-md-4 col-sm-6">
+          {/* <div className="col-md-4 col-sm-6">
             <div className="input-group">
               <span className="input-group-text">
                 <i className="fa-light fa-globe" />
@@ -156,108 +156,20 @@ const EditProfileContent = () => {
                 readOnly
               />
             </div>
-          </div>
+          </div> */}
           <div className="col-12">
-            <textarea className="form-control h-100-p" placeholder="Address" value="California, United States" readOnly/>
+            <textarea className="form-control h-100-p" placeholder="Address" value=" #Address,California, United States" readOnly/>
           </div>
         </div>
       </div>
-      <div className="profile-edit-tab-title">
-        <h6>Social Information</h6>
-      </div>
-      <div className="social-information">
-        <div className="row g-3">
-          <div className="col-sm-6">
-            <div className="input-group">
-              <span className="input-group-text">
-                <i className="fa-brands fa-facebook-f" />
-              </span>
-              <input
-                type="url"
-                className="form-control"
-                placeholder="Facebook"
-                value="https://www.facebook.com/"
-                readOnly
-              />
-            </div>
-          </div>
-          <div className="col-sm-6">
-            <div className="input-group">
-              <span className="input-group-text">
-                <i className="fa-brands fa-twitter" />
-              </span>
-              <input
-                type="url"
-                className="form-control"
-                placeholder="Twitter"
-                value="https://twitter.com/"
-                readOnly
-              />
-            </div>
-          </div>
-          <div className="col-sm-6">
-            <div className="input-group">
-              <span className="input-group-text">
-                <i className="fa-brands fa-linkedin-in" />
-              </span>
-              <input
-                type="url"
-                className="form-control"
-                placeholder="Linkedin"
-                value="https://www.linkedin.com/"
-                readOnly
-              />
-            </div>
-          </div>
-          <div className="col-sm-6">
-            <div className="input-group">
-              <span className="input-group-text">
-                <i className="fa-brands fa-instagram" />
-              </span>
-              <input
-                type="url"
-                className="form-control"
-                placeholder="Instagram"
-                value="https://www.instagram.com/"
-                readOnly
-              />
-            </div>
-          </div>
-          <div className="col-sm-6">
-            <div className="input-group">
-              <span className="input-group-text">
-                <i className="fa-brands fa-youtube" />
-              </span>
-              <input
-                type="url"
-                className="form-control"
-                placeholder="Youtube"
-                value="https://www.youtube.com/"
-                readOnly
-              />
-            </div>
-          </div>
-          <div className="col-sm-6">
-            <div className="input-group">
-              <span className="input-group-text">
-                <i className="fa-brands fa-pinterest-p" />
-              </span>
-              <input
-                type="url"
-                className="form-control"
-                placeholder="Pinterest"
-                value="https://www.pinterest.com/"
-                readOnly
-              />
-            </div>
-          </div>
+      
           <div className="col-12">
             <button type="submit" className="btn btn-primary">
               Save Changes
             </button>
           </div>
-        </div>
-      </div>
+        {/* </div> */}
+      {/* </div> */}
     </form>
   );
 };

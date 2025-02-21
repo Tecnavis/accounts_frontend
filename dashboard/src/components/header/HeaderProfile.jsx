@@ -164,18 +164,7 @@ const HeaderProfile = () => {
               <div className="dropdown-txt text-center">
                 <p className="mb-0">John Doe</p>
                 <span className="d-block">Web Developer</span>
-                <div className="d-flex justify-content-center">
-                  <div className="form-check pt-3">
-                      <input
-                        className="form-check-input"
-                        type="checkbox"
-                        id="seeProfileAsSidebar"
-                        checked={isProfileSidebarOpen.sidebar}
-                        onChange={handleProfileSidebarCheckboxChange}
-                      />
-                      <label className="form-check-label" htmlFor="seeProfileAsSidebar">See as sidebar</label>
-                  </div>
-                </div>
+                
               </div>
             </li>
             <li>
@@ -183,21 +172,7 @@ const HeaderProfile = () => {
                 <span className="dropdown-icon"><i className="fa-regular fa-circle-user"></i></span> Profile
               </Link>
             </li>
-            <li>
-              <Link className="dropdown-item" to="/chat">
-                <span className="dropdown-icon"><i className="fa-regular fa-message-lines"></i></span> Message
-              </Link>
-            </li>
-            <li>
-              <Link className="dropdown-item" to="/task">
-                <span className="dropdown-icon"><i className="fa-regular fa-calendar-check"></i></span> Taskboard
-              </Link>
-            </li>
-            <li>
-              <Link className="dropdown-item" to="#">
-                <span className="dropdown-icon"><i className="fa-regular fa-circle-question"></i></span> Help
-              </Link>
-            </li>
+            
             <li>
               <hr className="dropdown-divider" />
             </li>

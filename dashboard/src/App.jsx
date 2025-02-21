@@ -98,6 +98,8 @@ function App() {
             <Route path="/addEmployee" element={<AddEmployee />} />
             <Route path="/allEmployee" element={<AllEmployee />} />
             <Route path="/invoice/:id" element={<Invoices />} />
+            <Route path="/profile" element={<Profile/>}/>
+            <Route path="/editProfile" element={<EditProfile/>}/>
           </Route>
         </Route>        
       </Routes>

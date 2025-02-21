@@ -3,42 +3,44 @@ import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, Responsive
 import { DigiContext } from '../../context/DigiContext';
 
 const BalanceChart = () => {
-  const { isLightTheme, isRechartHeight } = useContext(DigiContext)
+  const { isLightTheme, isRechartHeight } = useContext(DigiContext);
+
+  // Updated data with "sales" and "purchases"
   const data = [
     {
       name: "Friday",
-      stock: 31,
-      order: 11
+      sales: 31,
+      purchases: 11
     },
     {
       name: "Saturday",
-      stock: 40,
-      order: 32
+      sales: 40,
+      purchases: 32
     },
     {
       name: "Sunday",
-      stock: 28,
-      order: 45
+      sales: 28,
+      purchases: 45
     },
     {
       name: "Monday",
-      stock: 51,
-      order: 32
+      sales: 51,
+      purchases: 32
     },
     {
       name: "Tuesday",
-      stock: 42,
-      order: 34
+      sales: 42,
+      purchases: 34
     },
     {
       name: "Wednesday",
-      stock: 109,
-      order: 52
+      sales: 109,
+      purchases: 52
     },
     {
       name: "Thursday",
-      stock: 100,
-      order: 41
+      sales: 100,
+      purchases: 41
     },
   ];
 
@@ -50,8 +52,9 @@ const BalanceChart = () => {
         <YAxis stroke={`${isLightTheme? 'hsl(0deg 0% 0% / 70%)' : 'hsl(0deg 0% 89.41% / 70%)'}`}/>
         <Tooltip />
         <Legend />
-        <Bar dataKey="stock" stackId="stack" fill="#0D99FF" />
-        <Bar dataKey="order" stackId="stack" fill="#a9b4cc" />
+        {/* Updated Bar components to use "sales" and "purchases" */}
+        <Bar dataKey="sales" stackId="stack" fill="#0D99FF" />
+        <Bar dataKey="purchases" stackId="stack" fill="#a9b4cc" />
       </BarChart>
     </ResponsiveContainer>
   );

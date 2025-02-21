@@ -50,12 +50,12 @@ const UserInformation = () => {
                     <div className="part-txt">
                         <h4 className="admin-name">Mitchell C. Shay</h4>
                         <span className="admin-role">Graphic Designer</span>
-                        <div className="admin-social">
+                        {/* <div className="admin-social">
                             <Link to="#"><i className="fa-brands fa-facebook-f"></i></Link>
                             <Link to="#"><i className="fa-brands fa-twitter"></i></Link>
                             <Link to="#"><i className="fa-brands fa-google"></i></Link>
                             <Link to="#"><i className="fa-brands fa-instagram"></i></Link>
-                        </div>
+                        </div> */}
                     </div>
                 </div>
                 <div className="bottom">

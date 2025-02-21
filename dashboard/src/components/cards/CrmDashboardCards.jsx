@@ -91,6 +91,7 @@
 // export default CrmDashboardCards
 
 
+
 import React, { useEffect, useState } from "react";
 import CountUp from "react-countup";
 import axios from "axios";
@@ -131,7 +132,7 @@ const CrmDashboardCards = () => {
   }, []);
 
   return (
-    <div className="row mb-30">
+    <div className="row mb-20">
       {[{
           label: "Total Transactions",
           icon: "fa-exchange",
@@ -176,3 +177,5 @@ const CrmDashboardCards = () => {
 };
 
 export default CrmDashboardCards;
+
+
