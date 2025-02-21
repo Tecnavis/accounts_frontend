@@ -4,7 +4,7 @@ import { DigiContext } from "../../context/DigiContext";
 import { BASE_URL } from "../../api";
 import Cookies from "js-cookie";
 
-const AllEmployeeTable = () => {
+const AllAdminTable = () => {
   const { isBelowLg } = useContext(DigiContext);
   const [currentPage, setCurrentPage] = useState(1);
   const [dataPerPage] = useState(10);
@@ -22,8 +22,8 @@ const AllEmployeeTable = () => {
       const result = await response.json();
   
       if (Array.isArray(result) && result.length > 0) {
-        // Filter users where role is 'staff'
-        const staffUsers = result.filter(user => user.role === "staff");
+     
+        const staffUsers = result.filter(user => user.role === "admin");
   
         const formattedData = staffUsers.map((user) => ({
           employee_id: user.id,
@@ -330,8 +330,7 @@ const AllEmployeeTable = () => {
   );
 };
 
-export default AllEmployeeTable;
-
+export default AllAdminTable;
 
 
 

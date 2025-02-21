@@ -7,6 +7,7 @@ import "jspdf-autotable";
 import axios from "axios";
 import { BASE_URL } from "../../api";
 import * as XLSX from "xlsx"; 
+import Cookies from "js-cookie";
 
 const AllSalesHeader = () => {
   const { headerBtnOpen, handleHeaderBtn, handleHeaderReset, headerRef } =
@@ -77,7 +78,7 @@ const AllSalesHeader = () => {
         .filter((transaction) => transaction.transaction_type === "sale")
         .map((transaction) => ({
           "Transaction ID": transaction.transaction_id,
-          "Customer Name": transaction.username,
+          "Username": transaction.username,
           "Service": transaction.service_name,
           "Price": `Rs ${transaction.service_price}`,
           "Total Paid": `Rs ${transaction.total_paid}`,
@@ -115,7 +116,7 @@ const AllSalesHeader = () => {
     if (!file) return;
   
     const formData = new FormData();
-    formData.append("excel_file", file);  // Ensure key matches backend
+    formData.append("excel_file", file);  
   
     try {
       const response = await axios.post(
@@ -124,6 +125,7 @@ const AllSalesHeader = () => {
         {
           headers: {
             "Content-Type": "multipart/form-data",
+             "Authorization": `Bearer ${Cookies.get("access_token")}` 
           },
         }
       );
@@ -134,33 +136,6 @@ const AllSalesHeader = () => {
     }
   };
   
-
-
-  // const uploadSalesExcel = async (event) => {
-  //   const file = event.target.files[0];
-  //   if (!file) return;
-  
-  //   const reader = new FileReader();
-  //   reader.onload = async (e) => {
-  //     const data = new Uint8Array(e.target.result);
-  //     const workbook = XLSX.read(data, { type: "array" });
-  
-  //     const sheetName = workbook.SheetNames[0]; 
-  //     const sheet = workbook.Sheets[sheetName];
-  //     const jsonData = XLSX.utils.sheet_to_json(sheet);
-  
-  //     try {
-  //       const response = await axios.post(`${BASE_URL}/financials/import-excel/`, jsonData);
-  //       alert("Sales data imported successfully!");
-  //     } catch (error) {
-  //       console.error("Error uploading sales data:", error);
-  //     }
-  //   };
-  
-  //   reader.readAsArrayBuffer(file);
-  // };
-  
-
   return (
     <div className="panel-header">
       <h5>Sales</h5>

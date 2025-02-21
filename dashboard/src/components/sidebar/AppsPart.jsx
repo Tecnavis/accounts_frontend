@@ -108,18 +108,22 @@ const AppsPart = () => {
                 All Suppliers
               </NavLink>
             </li>
-            {userRole === "ADMIN" && (
+            
+            {(userRole === "ADMIN" || userRole === "SUPER_ADMIN") && (
               <li className="sidebar-dropdown-item">
                 <NavLink to="/allEmployee" className="sidebar-link">
                   All Employee
                 </NavLink>
               </li>
-            )}
-            {/* <li className="sidebar-dropdown-item">
-              <NavLink to="/allEmployee" className="sidebar-link" onClick={handleSubNavLinkClick}>
-                All Employee
-              </NavLink>
-            </li> */}
+            )} 
+
+            {userRole === "SUPER_ADMIN" && (
+              <li className="sidebar-dropdown-item">
+                <NavLink to="/allAdmin" className="sidebar-link">
+                  All Admins
+                </NavLink>
+              </li>
+            )}        
            
           </ul>
         </li>

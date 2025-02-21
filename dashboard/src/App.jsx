@@ -8,7 +8,9 @@ import Task from "./pages/Task"
 import Leads from "./pages/Leads"
 import Customer from "./pages/purchaseditems"
 import AddEmployee from "./pages/AddEmployee"
+import AddAdmin from "./pages/AddAdmin"
 import AllEmployee from "./pages/AllEmployee"
+import AllAdmin from "./pages/AllAdmin"
 import Attendance from "./pages/Attendance"
 import AllCustomer from "./pages/AllCustomer"
 import AddNewProduct from "./pages/AddNewProduct"
@@ -97,6 +99,8 @@ function App() {
             <Route path="/supplier" element={<Company />} />
             <Route path="/addEmployee" element={<AddEmployee />} />
             <Route path="/allEmployee" element={<AllEmployee />} />
+            <Route path="/addAdmin" element={<AddAdmin />} />
+            <Route path="/allAdmin" element={<AllAdmin />} />
             <Route path="/invoice/:id" element={<Invoices />} />
             <Route path="/profile" element={<Profile/>}/>
             <Route path="/editProfile" element={<EditProfile/>}/>

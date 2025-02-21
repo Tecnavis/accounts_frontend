@@ -6,7 +6,7 @@ import { DigiContext } from '../../context/DigiContext';
 const AllEmployeeHeader = () => {
   return (
     <div className="panel-header">
-        <h5>All Staffs</h5>
+        <h5>All Employee</h5>
         <div className="btn-box d-flex flex-wrap gap-2">
             <div id="tableSearch">
                 <Form.Text placeholder='Search...'/>
