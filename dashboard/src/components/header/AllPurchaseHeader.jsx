@@ -148,7 +148,7 @@ const AllPurchaseHeader = () => {
           <Button className="btn btn-sm btn-success ms-2" onClick={downloadPurchasePDF}>
             <i className="fa fa-download"></i> PDF
           </Button>
-          <Button className="btn btn-sm btn-info ms-2" onClick={exportToExcel}>
+          <Button className="btn btn-sm btn-info ms-2 text-white" onClick={exportToExcel}>
             <i className="fa fa-file-excel"></i> Excel
           </Button>
         </div>

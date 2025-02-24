@@ -132,10 +132,16 @@ const AllProductTable = ({ categoryId }) => {
                                     <td>{service.total_price}</td>
                                     <td>{service.is_active ? "Active" : "Inactive"}</td>
                                     <td>
-                                        <div className="btn-box">
-                                            <button onClick={() => handleEdit(service)}><i className="fa-light fa-pen"></i></button>
-                                            <button onClick={() => handleDelete(service)}><i className="fa-light fa-trash"></i></button>
-                                        </div>
+                                        {/* <div className="btn-box"> */}
+                                        <td style={{ display: "flex",alignItems: "center" }}>
+                                            <button className="btn btn-sm " onClick={() => handleEdit(service)}>
+                                                <i className="fa-light fa-pen-to-square"></i>
+                                            </button>
+                                            <button className="btn btn-sm " onClick={() => handleDelete(service)}>
+                                                <i className="fa-light fa-trash"></i>
+                                            </button>
+                                        </td>
+                                        {/* </div> */}
                                     </td>
                                 </tr>
                             ))}

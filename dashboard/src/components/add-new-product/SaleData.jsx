@@ -20,8 +20,7 @@ const SaleData = () => {
         email: "",
         contact_number: "",
         service: "",
-        amount_paid: "",
-        payment_status: "pending",
+        amount_paid: "",        
         payment_mode: "cash",
         sale_date: new Date().toISOString().split("T")[0],
         remarks: "",
@@ -34,19 +33,10 @@ const SaleData = () => {
         
     });
 
-
     const getAuthHeader = () => {
         const token = Cookies.get('access_token');
         return token ? { Authorization: `Bearer ${token}` } : {};
     };
-
-
-    const PAYMENT_STATUS_CHOICES = [
-        { value: "paid", label: "Paid" },
-        { value: "unpaid", label: "Unpaid" },
-        { value: "completely_paid", label: "Completely Paid" },
-        { value: "pending", label: "Pending" },
-    ];
 
     const PAYMENT_MODE_CHOICES = [
         { value: "cash", label: "Cash" },
@@ -87,10 +77,7 @@ const SaleData = () => {
             setErrorMessage("Please enter valid numbers for Amount Paid and Quantity.");
             return;
         }
-
         try {
-           
-
         const transactionResponse = await axios.post(
         `${BASE_URL}/financials/transactions/`,{
             username: formData.username,
@@ -99,7 +86,6 @@ const SaleData = () => {
             billing_address: formData.billing_address,
             service: formData.service,
             quantity: quantity,
-            payment_status: formData.payment_status,
             payment_mode: formData.payment_mode, 
             vat_type: formData.vat_type, 
             transaction_type: formData.transaction_type,
@@ -110,12 +96,9 @@ const SaleData = () => {
             headers: {
                 ...getAuthHeader()
             }
-        }
-    
-    
+        }    
     
     );
-
         if (amountPaid > 0) {
             try {
                 console.log("Sending Payment Data:", {
@@ -148,7 +131,6 @@ const SaleData = () => {
                 contact_number: "",
                 service: "",
                 amount_paid: "",
-                payment_status: "pending",
                 payment_mode: "cash",
                 sale_date: new Date().toISOString().split("T")[0],
                 remarks: "",
@@ -220,8 +202,6 @@ const SaleData = () => {
                         />
                     </div>
                 </div>
-
-
                 <div className="row g-3 mb-3">
                     <label htmlFor="billing_address" className="col-md-2 col-form-label col-form-label-sm">
                         Billing Address
@@ -238,6 +218,29 @@ const SaleData = () => {
                         />
                     </div>
                 </div>
+
+                <div className="row g-3 mb-3">
+                    <label htmlFor="country" className="col-md-2 col-form-label col-form-label-sm">
+                        Country
+                    </label>
+                    <div className="col-md-6">
+                        <select
+                            id="country"
+                            name="country"
+                            className="form-control form-control-sm"
+                            value={formData.country}
+                            onChange={(e) => {
+                                const selectedCountry = e.target.value;
+                                setFormData({ ...formData, country: selectedCountry, vat_type: "" });
+                            }}
+                        >
+                            <option value="">Select Country</option>
+                            <option value="india">India</option>
+                            <option value="saudi">Saudi Arabia</option>
+                        </select>
+                    </div>
+                </div>
+
                 <div className="row g-3 mb-3">
                     <label htmlFor="transaction_type" className="col-md-2 col-form-label col-form-label-sm">
                         Transaction Type
@@ -283,85 +286,86 @@ const SaleData = () => {
                     </div>
                 </div>
 
-<div className="row g-3 mb-3">
-    <label htmlFor="country" className="col-md-2 col-form-label col-form-label-sm">
-        Country
-    </label>
-    <div className="col-md-6">
-        <select
-            id="country"
-            name="country"
-            className="form-control form-control-sm"
-            value={formData.country}
-            onChange={(e) => {
-                const selectedCountry = e.target.value;
-                setFormData({ ...formData, country: selectedCountry, vat_type: "" });
-            }}
-        >
-            <option value="">Select Country</option>
-            <option value="india">India</option>
-            <option value="saudi">Saudi Arabia</option>
-        </select>
-    </div>
-</div>
-
-{formData.country && (
-    <div className="row g-3 mb-3">
-        <label htmlFor="vat_type" className="col-md-2 col-form-label col-form-label-sm">
-            {formData.country === "india" ? "GST Rate" : "VAT Rate"}
-        </label>
-        <div className="col-md-6">
-            <select
-                id="vat_type"
-                name="vat_type"
-                className="form-control form-control-sm"
-                value={formData.vat_type}
-                onChange={(e) => setFormData({ ...formData, vat_type: e.target.value })}
-            >
-                <option value="">Select {formData.country === "india" ? "GST" : "VAT"}</option>
-                {(formData.country === "india"
-                    ? [
-                        { value: "GST_5", label: "5% GST" },
-                        { value: "GST_12", label: "12% GST" },
-                        { value: "GST_18", label: "18% GST" },
-                        { value: "GST_28", label: "28% GST" },
-                    ]
-                    : [
-                        { value: "standard", label: "Standard VAT (15%)" },
-                        { value: "zero_rated", label: "Zero-Rated VAT (0%)" },
-                        { value: "exempt", label: "Exempt VAT (No VAT Applied)" },
-                    ]
-                ).map((vat) => (
-                    <option key={vat.value} value={vat.value}>
-                        {vat.label}
-                    </option>
-                ))}
-            </select>
-        </div>
-    </div>
-)}
-
                 <div className="row g-3 mb-3">
-                    <label htmlFor="payment_status" className="col-md-2 col-form-label col-form-label-sm">
-                        Payment Status
+                    <label htmlFor="quantity" className="col-md-2 col-form-label col-form-label-sm">
+                        Quantity
                     </label>
                     <div className="col-md-6">
-                        <select
-                            id="payment_status"
-                            name="payment_status"
+                        <input
+                            type="number"
                             className="form-control form-control-sm"
-                            value={formData.payment_status}
+                            id="quantity"
+                            name="quantity"
+                            value={formData.quantity}
                             onChange={handleInputChange}
-                        >
-                            {PAYMENT_STATUS_CHOICES.map((status) => (
-                                <option key={status.value} value={status.value}>
-                                    {status.label}
-                                </option>
-                            ))}
-                        </select>
+                            min="1"
+                        />
                     </div>
                 </div>
-                
+                <div className="row g-3 mb-3">
+                    <label htmlFor="service_price" className="col-md-2 col-form-label col-form-label-sm">
+                        Service Total Price
+                    </label>
+                    <div className="col-md-4">
+                        <input
+                            type="text"
+                            className="form-control form-control-sm"
+                            id="service_price"
+                            value={selectedService ? selectedService.total_price : ''}
+                            readOnly
+                        />
+                    </div>
+                </div>
+                <div className="row g-3 mb-3">
+                    <label htmlFor="amount_paid" className="col-md-2 col-form-label col-form-label-sm">
+                        Amount Paid
+                    </label>
+                    <div className="col-md-6">
+                        <input
+                            type="number"
+                            className="form-control form-control-sm"
+                            id="amount_paid"
+                            name="amount_paid"
+                            value={formData.amount_paid || ""}
+                            onChange={handleInputChange}
+                        />
+                    </div>
+                </div>
+                {formData.country && (
+                    <div className="row g-3 mb-3">
+                        <label htmlFor="vat_type" className="col-md-2 col-form-label col-form-label-sm">
+                            {formData.country === "india" ? "GST Rate" : "VAT Rate"}
+                        </label>
+                        <div className="col-md-6">
+                            <select
+                                id="vat_type"
+                                name="vat_type"
+                                className="form-control form-control-sm"
+                                value={formData.vat_type}
+                                onChange={(e) => setFormData({ ...formData, vat_type: e.target.value })}
+                            >
+                                <option value="">Select {formData.country === "india" ? "GST" : "VAT"}</option>
+                                {(formData.country === "india"
+                                    ? [
+                                        { value: "GST_5", label: "5% GST" },
+                                        { value: "GST_12", label: "12% GST" },
+                                        { value: "GST_18", label: "18% GST" },
+                                        { value: "GST_28", label: "28% GST" },
+                                    ]
+                                    : [
+                                        { value: "standard", label: "Standard VAT (15%)" },
+                                        { value: "zero_rated", label: "Zero-Rated VAT (0%)" },
+                                        { value: "exempt", label: "Exempt VAT (No VAT Applied)" },
+                                    ]
+                                ).map((vat) => (
+                                    <option key={vat.value} value={vat.value}>
+                                        {vat.label}
+                                    </option>
+                                ))}
+                            </select>
+                        </div>
+                    </div>
+                )}
                 <div className="row g-3 mb-3">
                     <label htmlFor="payment_mode" className="col-md-2 col-form-label col-form-label-sm">
                         Payment Mode
@@ -382,7 +386,6 @@ const SaleData = () => {
                         </select>
                     </div>
                 </div>    
-
                 <div className="row g-3 mb-3">
                     <label htmlFor="remarks" className="col-md-2 col-form-label col-form-label-sm">
                         Remarks
@@ -399,54 +402,6 @@ const SaleData = () => {
                         />
                     </div>
                 </div>
-                <div className="row g-3 mb-3">
-                    <label htmlFor="service_price" className="col-md-2 col-form-label col-form-label-sm">
-                        Service Total Price
-                    </label>
-                    <div className="col-md-4">
-                        <input
-                            type="text"
-                            className="form-control form-control-sm"
-                            id="service_price"
-                            value={selectedService ? selectedService.total_price : ''}
-                            readOnly
-                        />
-                    </div>
-                </div>
-
-                <div className="row g-3 mb-3">
-                    <label htmlFor="amount_paid" className="col-md-2 col-form-label col-form-label-sm">
-                        Amount Paid
-                    </label>
-                    <div className="col-md-6">
-                        <input
-                            type="number"
-                            className="form-control form-control-sm"
-                            id="amount_paid"
-                            name="amount_paid"
-                            value={formData.amount_paid || ""}
-                            onChange={handleInputChange}
-                        />
-                    </div>
-                </div>
-
-                <div className="row g-3 mb-3">
-                    <label htmlFor="quantity" className="col-md-2 col-form-label col-form-label-sm">
-                        Quantity
-                    </label>
-                    <div className="col-md-6">
-                        <input
-                            type="number"
-                            className="form-control form-control-sm"
-                            id="quantity"
-                            name="quantity"
-                            value={formData.quantity}
-                            onChange={handleInputChange}
-                            min="1"
-                        />
-                    </div>
-                </div>
-
                 <Button type="submit" className="btn btn-primary">
                     Submit
                 </Button>
@@ -457,5 +412,4 @@ const SaleData = () => {
         </div>
     );
 };
-
 export default SaleData;

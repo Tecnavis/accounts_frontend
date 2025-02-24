@@ -88,9 +88,10 @@ const CategoryTable = () => {
                 <Table className="table table-dashed table-hover digi-dataTable all-product-table table-striped">
                     <thead>
                         <tr>
-                            <th>
+                            {/* <th>
                                 <input className="form-check-input" type="checkbox" id="markAllProduct" />
-                            </th>
+                            </th> */}
+                            <th>ID</th>
                             <th>Name</th>
                             <th>Description</th>
                             <th>Action</th>
@@ -104,9 +105,10 @@ const CategoryTable = () => {
                         ) : (
                             currentData.map((category) => (
                                 <tr key={category.id}>
-                                    <td>
+                                    {/* <td>
                                         <input className="form-check-input" type="checkbox" />
-                                    </td>
+                                    </td> */}
+                                    <td>{category.id}</td>
                                     <td>{category.name}</td>
                                     <td>{category.description}</td>
                                     <td>
@@ -114,6 +116,7 @@ const CategoryTable = () => {
                                         
                                     <button onC onClick={() => handleEdit(category)}><i className="fa-light fa-pen-to-square"></i></button>
                                     <button onClick={() => handleDelete(category)}><i className="fa-light fa-trash"></i></button>
+                                    
                                     </div>
                                     </td>
                                 </tr>

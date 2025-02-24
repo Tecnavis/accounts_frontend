@@ -150,13 +150,13 @@ const AllSalesHeader = () => {
           <Button className="btn btn-sm btn-success ms-2" onClick={downloadSalesPDF}>
             <i className="fa fa-download"></i> PDF
           </Button>
-          <Button className="btn btn-sm btn-info ms-2" onClick={downloadSalesExcel}>
-            <i className="fa fa-file-excel"></i>Excel
+          <Button className="btn btn-sm btn-info ms-2 text-white" onClick={downloadSalesExcel}>
+            <i className="fa-light fa-file-excel"></i>Excel
           </Button>
 
           <input type="file" accept=".xlsx, .xls" onChange={uploadSalesExcel} className="d-none" id="uploadExcel" />
-          <label htmlFor="uploadExcel" className="btn btn-sm btn-success ms-2">
-            <i className="fa fa-upload"></i> Import
+          <label htmlFor="uploadExcel" className="btn btn-sm btn-primary ms-2 text-white">
+            <i className="fa-light fa-upload"></i> Import
           </label>
 
         </div>
