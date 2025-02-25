@@ -85,8 +85,6 @@ const AllEmployeeTable = () => {
     }
   };
   
-
-
   const handleRevokeEmployee = async () => {
     try {
       const response = await fetch(`${BASE_URL}/users/staffs/revoke/${selectedEmployee.id}/`, {

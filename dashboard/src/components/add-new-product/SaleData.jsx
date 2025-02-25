@@ -11,6 +11,7 @@ const SaleData = () => {
     const [successMessage, setSuccessMessage] = useState(null);
     const [errorMessage, setErrorMessage] = useState(null);
     const [errors, setErrors] = useState({}); 
+    const [quantity, setQuantity] = useState(1);
     const [paymentData, setPaymentData] = useState({
         transaction: '',
         amount: '',
@@ -30,6 +31,7 @@ const SaleData = () => {
         billing_address: "",
         country: "saudi",
         vat_type: "",
+        discount_amount:"",
     });
 
     const getAuthHeader = () => {
@@ -139,6 +141,7 @@ const SaleData = () => {
                     transaction_type: formData.transaction_type,
                     sale_date: formData.sale_date,
                     remarks: formData.remarks,
+                    discount_amount: formData.discount_amount === "" ? 0 : formData.discount_amount,
                 },
                 {
                     headers: {
@@ -171,8 +174,6 @@ const SaleData = () => {
             
             setTransactionId(transactionResponse.data.transaction_id);
             setSuccessMessage(`Transaction created successfully! ID: ${transactionResponse.data.transaction_id}`);
-
-            // setSuccessMessage(`Transaction created successfully! ID: ${transactionResponse.data.transaction_id}`);
             setFormData({
                 username: "",
                 email: "",
@@ -369,6 +370,7 @@ const SaleData = () => {
                         />
                     </div>
                 </div>
+
                 <div className="row g-3 mb-3">
                     <label htmlFor="service_price" className="col-md-2 col-form-label col-form-label-sm">
                         Service Total Price
@@ -383,6 +385,50 @@ const SaleData = () => {
                         />
                     </div>
                 </div>
+
+                <div className="row g-3 mb-3">
+                    <label htmlFor="discount" className="col-md-2 col-form-label col-form-label-sm">
+                        Discount Amount
+                    </label>
+                    <div className="col-md-4">
+                        <input
+                            type="number"
+                            className="form-control form-control-sm"
+                            id="discount"
+                            name="discount_amount"
+                            value={formData.discount_amount === 0 ? '' : formData.discount_amount}
+                            onChange={(e) => {
+                                const val = e.target.value;
+                                setFormData({ 
+                                    ...formData, 
+                                    discount_amount: val === '' ? '' : parseFloat(val) || 0 
+                                });
+                            }}
+                            min="0"
+                        />
+                    </div>
+                </div>
+
+                <div className="row g-3 mb-3">
+                    <label htmlFor="service_price" className="col-md-2 col-form-label col-form-label-sm">
+                        Quantity Based Price (After Discount)
+                    </label>
+                    <div className="col-md-4">
+                        <input
+                            type="text"
+                            className="form-control form-control-sm"
+                            id="service_price"
+                            value={
+                                selectedService 
+                                    ? Math.max(0, (selectedService.total_price * (formData.quantity || 1)) - (formData.discount_amount || 0))
+                                    : ''
+                            }
+                            readOnly
+                        />
+                    </div>
+                </div>
+
+
                 <div className="row g-3 mb-3">
                     <label htmlFor="amount_paid" className="col-md-2 col-form-label col-form-label-sm">
                         Amount Paid

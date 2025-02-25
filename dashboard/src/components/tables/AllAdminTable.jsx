@@ -59,7 +59,7 @@ const AllAdminTable = () => {
 
   const handleUpdateEmployee = async () => {
     try {
-      const response = await fetch(`${BASE_URL}/users/staffs/${selectedEmployee.id}/`, {
+      const response = await fetch(`${BASE_URL}/users/admin/${selectedEmployee.id}/`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -75,8 +75,8 @@ const AllAdminTable = () => {
       if (response.ok) {
         const updatedData = await response.json();
         console.log("Updated Employee:", updatedData);
-        fetchStaffUsers(); // Refresh employee list
-        setShowModal(false); // Close modal after update
+        fetchStaffUsers(); 
+        setShowModal(false); 
       } else {
         console.error("Error updating employee:", await response.json());
       }
@@ -84,8 +84,6 @@ const AllAdminTable = () => {
       console.error("Network error:", error);
     }
   };
-  
-
 
   const handleRevokeEmployee = async () => {
     try {

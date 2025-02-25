@@ -154,31 +154,6 @@ const InvoicePage = () => {
                 </tbody>
               </table>
             </div>
-
-            <div className="table-responsive mb-30">
-              <table className="table table-bordered mb-0 invoice-table">
-                <thead>
-                  <tr>
-                    <th>Service</th>
-                    <th>Amount</th>
-                    <th>Quantity</th>
-                    <th>Tax Rate</th>
-                    <th>Tax Amount</th>
-                    <th>Total</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td>{invoiceData.service_name}</td>
-                    <td>Rs {invoiceData.service_price}</td>
-                    <td>{invoiceData.quantity}</td>
-                    <td>{invoiceData.vat_rate || "N/A"}</td>
-                    <td>Rs {invoiceData.vat_amount || 0}</td>
-                    <td>Rs {invoiceData.total_service_amount}</td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
             <div className="mb-30">
               <h3 className="mb-3">Payment History</h3>
               <div className="table-responsive">
