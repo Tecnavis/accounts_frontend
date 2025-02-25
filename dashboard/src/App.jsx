@@ -71,10 +71,19 @@ function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(!!Cookies.get('access_token'));
 
   useEffect(() => {
-    const checkAuth = () => setIsAuthenticated(!!Cookies.get('access_token'));
-    window.addEventListener('storage', checkAuth); 
-
-    return () => window.removeEventListener('storage', checkAuth);
+    // Check if user is authenticated
+    const checkAuth = () => {
+      const hasToken = !!Cookies.get('access_token');
+      setIsAuthenticated(hasToken);
+    };
+    
+    checkAuth();
+    window.addEventListener('storage', checkAuth);
+    window.addEventListener('auth-change', checkAuth);
+    return () => {
+      window.removeEventListener('storage', checkAuth);
+      window.removeEventListener('auth-change', checkAuth);
+    };
   }, []);
 
   return (
