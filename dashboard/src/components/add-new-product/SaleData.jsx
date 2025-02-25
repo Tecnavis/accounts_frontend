@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Button, Modal } from "react-bootstrap";
+import { Button } from "react-bootstrap";
 import axios from "axios";
 import { BASE_URL } from "../../api";
 import Cookies from "js-cookie";
@@ -10,27 +10,26 @@ const SaleData = () => {
     const [transactionId, setTransactionId] = useState(null);
     const [successMessage, setSuccessMessage] = useState(null);
     const [errorMessage, setErrorMessage] = useState(null);
+    const [errors, setErrors] = useState({}); 
     const [paymentData, setPaymentData] = useState({
         transaction: '',
         amount: '',
     });
-    
+   
     const [formData, setFormData] = useState({
         username: "",
         email: "",
         contact_number: "",
         service: "",
-        amount_paid: "",        
+        amount_paid: "",
         payment_mode: "cash",
         sale_date: new Date().toISOString().split("T")[0],
         remarks: "",
         quantity: 1,
         transaction_type: "sale",
         billing_address: "",
-        payments: [],
         country: "saudi",
         vat_type: "",
-        
     });
 
     const getAuthHeader = () => {
@@ -44,7 +43,7 @@ const SaleData = () => {
         { value: "upi", label: "UPI" },
         { value: "other", label: "Other" },
     ];
-    
+
     useEffect(() => {
         const fetchServices = async () => {
             try {
@@ -58,6 +57,50 @@ const SaleData = () => {
         fetchServices();
     }, []);
 
+    const validateForm = () => {
+        let newErrors = {};
+    
+        if (!formData.username.trim()) {
+            newErrors.username = "Username is required";
+        }
+        if (!formData.email.trim()) {
+            newErrors.email = "Email is required";
+        } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
+            newErrors.email = "Invalid email format";
+        }
+        if (!formData.contact_number.trim()) {
+            newErrors.contact_number = "Contact number is required";
+        } else if (!/^\d+$/.test(formData.contact_number) || formData.contact_number.length < 8) {
+            newErrors.contact_number = "Invalid contact number";
+        }
+        if (!formData.service) {
+            newErrors.service = "Please select a service";
+        }
+        if (!formData.billing_address.trim()) {
+            newErrors.billing_address = "Billing address is required";
+        }
+        if (!formData.country.trim()) {
+            newErrors.country = "Country is required";
+        }
+        if (!formData.transaction_type.trim()) {
+            newErrors.transaction_type = "Transaction type is required";
+        }
+        if (!formData.payment_mode.trim()) {
+            newErrors.payment_mode = "Payment mode is required";
+        }
+        if (!formData.sale_date.trim()) {
+            newErrors.sale_date = "Sale date is required";
+        }
+        if (!formData.vat_type.trim()) {
+            newErrors.vat_type = "VAT type is required";
+        }
+        if (!formData.quantity || formData.quantity <= 0) {
+            newErrors.quantity = "Quantity must be at least 1";
+        }
+    
+        setErrors(newErrors);
+        return Object.keys(newErrors).length === 0;
+    };
     const handleInputChange = (e) => {
         const { name, value } = e.target;
         setFormData((prev) => ({
@@ -69,6 +112,7 @@ const SaleData = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         setErrorMessage(null);
+        setSuccessMessage(null);
 
         const amountPaid = parseFloat(formData.amount_paid) || 0;
         const quantity = parseInt(formData.quantity, 10) || 1;
@@ -77,54 +121,58 @@ const SaleData = () => {
             setErrorMessage("Please enter valid numbers for Amount Paid and Quantity.");
             return;
         }
-        try {
-        const transactionResponse = await axios.post(
-        `${BASE_URL}/financials/transactions/`,{
-            username: formData.username,
-            email: formData.email,      
-            contact_number: formData.contact_number,
-            billing_address: formData.billing_address,
-            service: formData.service,
-            quantity: quantity,
-            payment_mode: formData.payment_mode, 
-            vat_type: formData.vat_type, 
-            transaction_type: formData.transaction_type,
-            sale_date: formData.sale_date,
-            remarks: formData.remarks
-        },
-        {
-            headers: {
-                ...getAuthHeader()
-            }
-        }    
-    
-    );
-        if (amountPaid > 0) {
-            try {
-                console.log("Sending Payment Data:", {
-                    transaction: transactionResponse.data.transaction_id,
-                    amount: parseFloat(amountPaid),  // Send as float
-                    payment_mode: formData.payment_mode,
-                    payment_date: formData.sale_date
-                });
-                await axios.post(`${BASE_URL}/financials/payments/create/`, {
-                    transaction: transactionResponse.data.transaction_id,
-                    amount: parseFloat(amountPaid),
-                    payment_mode: formData.payment_mode,
-                    payment_date: formData.sale_date
-                });
-        
-            } catch (paymentError) {
-                console.error("Payment Error:", paymentError.response?.data);
-                setErrorMessage("Transaction created but payment failed: " + 
-                    (paymentError.response?.data?.detail || "Payment creation failed"));
-                return;
-            }
-        }
-        
-        setTransactionId(transactionResponse.data.transaction_id);
-        setSuccessMessage(`Transaction created successfully! ID: ${transactionResponse.data.transaction_id}`);
 
+        if (!validateForm()) return;
+
+        try {
+            const transactionResponse = await axios.post(
+                `${BASE_URL}/financials/transactions/`,
+                {
+                    username: formData.username,
+                    email: formData.email,
+                    contact_number: formData.contact_number,
+                    billing_address: formData.billing_address,
+                    service: formData.service,
+                    quantity:quantity,
+                    payment_mode: formData.payment_mode,
+                    vat_type: formData.vat_type,
+                    transaction_type: formData.transaction_type,
+                    sale_date: formData.sale_date,
+                    remarks: formData.remarks,
+                },
+                {
+                    headers: {
+                        ...getAuthHeader()
+                    }
+                }     
+            );
+            if (amountPaid > 0) {
+                try {
+                    console.log("Sending Payment Data:", {
+                        transaction: transactionResponse.data.transaction_id,
+                        amount: parseFloat(amountPaid),
+                        payment_mode: formData.payment_mode,
+                        payment_date: formData.sale_date
+                    });
+                    await axios.post(`${BASE_URL}/financials/payments/create/`, {
+                        transaction: transactionResponse.data.transaction_id,
+                        amount: parseFloat(amountPaid),
+                        payment_mode: formData.payment_mode,
+                        payment_date: formData.sale_date
+                    });
+            
+                } catch (paymentError) {
+                    console.error("Payment Error:", paymentError.response?.data);
+                    setErrorMessage("Transaction created but payment failed: " + 
+                        (paymentError.response?.data?.detail || "Payment creation failed"));
+                    return;
+                }
+            }
+            
+            setTransactionId(transactionResponse.data.transaction_id);
+            setSuccessMessage(`Transaction created successfully! ID: ${transactionResponse.data.transaction_id}`);
+
+            // setSuccessMessage(`Transaction created successfully! ID: ${transactionResponse.data.transaction_id}`);
             setFormData({
                 username: "",
                 email: "",
@@ -137,22 +185,38 @@ const SaleData = () => {
                 quantity: 1,
                 transaction_type: "sale",
                 billing_address: "",
-                payments: [],
                 country: "saudi",
                 vat_type: "",
             });
+            setSelectedService(null); 
 
-            setSelectedService(null);
         } catch (error) {
             console.error("Error submitting form:", error);
-            setErrorMessage("Failed to create transaction. Please check the details and try again.");
+            // More specific error handling
+            if (error.response) {
+                setErrorMessage(`Failed to create transaction: ${error.response.data.message || error.response.status}`);
+            } else if (error.request) {
+                setErrorMessage("Failed to create transaction: No response from server.");
+            } else {
+                setErrorMessage("Failed to create transaction: A network error occurred.");
+            }
         }
     };
 
     return (
         <div className="panel">
             <form onSubmit={handleSubmit}>
-           
+
+            {Object.keys(errors).length > 0 && (
+                <div className="alert alert-danger">
+                    <ul>
+                        {Object.entries(errors).map(([key, value]) => (
+                            <li key={key}>{value}</li>
+                        ))}
+                    </ul>
+                </div>
+            )}
+                
             <div className="row g-3 mb-3">
                     <label htmlFor="username" className="col-md-2 col-form-label col-form-label-sm">
                         Username
@@ -167,6 +231,7 @@ const SaleData = () => {
                             onChange={handleInputChange}
                             placeholder="Enter username"
                         />
+                       {errors.username && <div className="text-danger">{errors.username}</div>}
                     </div>
                 </div>
                 <div className="row g-3 mb-3">
@@ -183,6 +248,7 @@ const SaleData = () => {
                             onChange={handleInputChange}
                             placeholder="Enter email"
                         />
+                        {errors.email && <div className="text-danger">{errors.email}</div>}
                     </div>
                 </div>
 
@@ -200,6 +266,7 @@ const SaleData = () => {
                             onChange={handleInputChange}
                             placeholder="Enter contact number"
                         />
+                        {errors.contact_number && <div className="text-danger">{errors.contact_number}</div>}
                     </div>
                 </div>
                 <div className="row g-3 mb-3">
@@ -413,3 +480,4 @@ const SaleData = () => {
     );
 };
 export default SaleData;
+
