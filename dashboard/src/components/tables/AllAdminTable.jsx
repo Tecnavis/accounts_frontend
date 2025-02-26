@@ -107,7 +107,7 @@ const AllAdminTable = () => {
   const handleDeleteEmployee = async (id) => {
     if (window.confirm("Are you sure you want to delete this employee?")) {
       try {
-        const response = await fetch(`${BASE_URL}/users/staffs/${id}/delete/`, {
+        const response = await fetch(`${BASE_URL}/users/admin/${id}/delete/`, {
           method: "DELETE",
           headers: {
             "Content-Type": "application/json",
