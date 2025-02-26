@@ -7,6 +7,7 @@ import "jspdf-autotable";
 import * as XLSX from "xlsx"; 
 import axios from "axios";
 import { BASE_URL } from "../../api";
+import Cookies from "js-cookie";
 
 const AllPurchaseHeader = () => {
   const { headerBtnOpen, handleHeaderBtn, handleHeaderReset, headerRef } =
@@ -40,7 +41,7 @@ const AllPurchaseHeader = () => {
 
       const columns = [
         "Transaction ID",
-        "Customer Name",
+        "Username",
         "Service",
         "Price",
         "Total Paid",
@@ -100,7 +101,7 @@ const AllPurchaseHeader = () => {
   
           return {
             "Transaction ID": transaction.transaction_id,
-            "Customer Name": transaction.username,
+            "Username": transaction.username,
             "Service": transaction.service_name,
             "Price": `Rs ${transaction.service_price}`,
             "Total Paid": `Rs ${transaction.total_paid}`,
@@ -133,6 +134,32 @@ const AllPurchaseHeader = () => {
       console.error("Error exporting to Excel:", error);
     }
   };
+
+  const uploadSalesExcel = async (event) => {
+    const file = event.target.files[0];
+    if (!file) return;
+  
+    const formData = new FormData();
+    formData.append("excel_file", file);  
+  
+    try {
+      const response = await axios.post(
+        `${BASE_URL}/financials/import_excel_purchase/`,
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+             "Authorization": `Bearer ${Cookies.get("access_token")}` 
+          },
+        }
+      );
+      console.log("Response:", response.data);
+      alert("Sales data imported successfully!");
+    } catch (error) {
+      console.error("Error uploading sales data:", error.response?.data || error);
+      alert("Error uploading sales data");
+    }
+  };
   
   return (
     <div className="panel-header">
@@ -151,6 +178,12 @@ const AllPurchaseHeader = () => {
           <Button className="btn btn-sm btn-info ms-2 text-white" onClick={exportToExcel}>
             <i className="fa fa-file-excel"></i> Excel
           </Button>
+
+          <input type="file" accept=".xlsx, .xls" onChange={uploadSalesExcel} className="d-none" id="uploadExcel" />
+          <label htmlFor="uploadExcel" className="btn btn-sm btn-primary ms-2 text-white">
+            <i className="fa-light fa-upload"></i> Import
+          </label>
+
         </div>
       </div>
     </div>
@@ -158,3 +191,4 @@ const AllPurchaseHeader = () => {
 };
 
 export default AllPurchaseHeader;
+

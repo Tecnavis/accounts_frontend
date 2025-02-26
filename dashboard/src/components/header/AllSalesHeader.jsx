@@ -24,7 +24,7 @@ const AllSalesHeader = () => {
 
       const columns = [
         "Transaction ID",
-        "Customer Name",
+        "Username",
         "Service",
         "Price",
         "Total Paid",
@@ -32,6 +32,7 @@ const AllSalesHeader = () => {
         "Sale Date",
         "Payment Modes",
       ];
+
 
       const rows = transactions
         .filter((transaction) => transaction.transaction_type === "sale")

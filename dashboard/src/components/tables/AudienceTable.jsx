@@ -25,7 +25,7 @@ const AudienceTable = () => {
                 </th>
                 <th>ID</th>
                 <th>Item</th>
-                <th>Customer Name</th>
+                <th>Username</th>
                 <th>Email</th>
                 <th>Company</th>
                 <th>Phone</th>
