@@ -6,7 +6,6 @@ import { Link, useNavigate } from 'react-router-dom';
 import { BASE_URL } from "../../api";
 
 
-
 const PurchaseReportTable = () => {
   const [transactions, setTransactions] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -100,7 +99,7 @@ const PurchaseReportTable = () => {
         <thead>
           <tr>
             <th>Transaction ID</th>
-            <th>Username</th>
+            <th>Name</th>
             <th>Service</th>
             <th>Payment Status</th>
             {/* <th>Payment Mode</th> */}
@@ -125,10 +124,19 @@ const PurchaseReportTable = () => {
                     {transaction.transaction_id}
                   </Link>
                 </td>
-                <td>{transaction.username}</td>
+                <td>
+                  {transaction.partner ? (
+                    <>
+                      <strong>{transaction.partner.first_name} {transaction.partner.last_name}</strong>
+                      <br />
+                      📞 {transaction.partner.contact_number}
+                      <br />
+                      ✉️ {transaction.partner.email}
+                    </>
+                  ) : "N/A"}
+                </td>
                 <td>{transaction.service_name}</td>
                 <td>{transaction.payment_status}</td>
-                {/* <td>{transaction.payments?.[0]?.payment_mode || "N/A"}</td> */}
                 <td>{transaction.sale_date}</td>
                 <td>Rs {transaction.service_price}</td>
                 <td>{transaction.quantity}</td>
@@ -145,7 +153,6 @@ const PurchaseReportTable = () => {
                   <Button variant="info" className="me-2" onClick={() => fetchPayments(transaction.id)}>
                     <Eye />
                   </Button>
-                  {/* <button onClick={() => handleDeleteClick(transaction)}><i className="fa-light fa-trash"></i></button> */}
                   <Button variant="primary" onClick={() => handleDeleteClick(transaction)}>
                     <i className="fa fa-trash"></i>
                   </Button>
@@ -154,8 +161,6 @@ const PurchaseReportTable = () => {
           ))}
         </tbody>
       </Table>
-
-      {/* Payment Modal */}
       <Modal show={showPaymentModal} onHide={() => setShowPaymentModal(false)} centered>
         <Modal.Header closeButton>
           <Modal.Title>Enter Payment Amount</Modal.Title>

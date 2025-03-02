@@ -8,6 +8,7 @@ import Task from "./pages/Task"
 import Leads from "./pages/Leads"
 import Customer from "./pages/purchaseditems"
 import AddEmployee from "./pages/AddEmployee"
+import AddPartner from "./pages/AddPartner"
 import AddAdmin from "./pages/AddAdmin"
 import AllEmployee from "./pages/AllEmployee"
 import AllAdmin from "./pages/AllAdmin"
@@ -100,16 +101,24 @@ function App() {
             <Route path="/category" element={<Category />} />
             <Route path="/addNewProduct" element={<AddNewProduct />} />
             <Route path="/purchaseditem" element={<Customer />} />
+
             <Route path="/allSales" element={<AllSales />} />
             <Route path="/addSales" element={<AddSales />} />
+
             <Route path="/allpurchase" element={<AllPurchase />} />
             <Route path="/addPurchase" element={<AddPurchase />} />
+
             <Route path="/allCustomer" element={<AllCustomer />} />
             <Route path="/supplier" element={<Company />} />
+
             <Route path="/addEmployee" element={<AddEmployee />} />
             <Route path="/allEmployee" element={<AllEmployee />} />
+
+            <Route path="/addPartner" element={<AddPartner />} />
+
             <Route path="/addAdmin" element={<AddAdmin />} />
             <Route path="/allAdmin" element={<AllAdmin />} />
+
             <Route path="/invoice/:id" element={<Invoices />} />
             <Route path="/profile" element={<Profile/>}/>
             <Route path="/editProfile" element={<EditProfile/>}/>

@@ -4,63 +4,38 @@ import { Table } from "react-bootstrap";
 import { OverlayScrollbarsComponent } from "overlayscrollbars-react";
 import PaginationSection from "./PaginationSection";
 import { BASE_URL } from "../../api";
+import Cookies from "js-cookie";
 
 const AllCustomerTable = () => {
   const [customers, setCustomers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
-  const [dataPerPage] = useState(10);
+  const [totalPages, setTotalPages] = useState(1);
 
   useEffect(() => {
-    fetchCustomers();
-  }, []);
+    fetchCustomers(currentPage);
+  }, [currentPage]);
 
-  const fetchCustomers = async () => {
+  const fetchCustomers = async (page) => {
     try {
-      const response = await axios.get(`${BASE_URL}/financials/transactions_list/`);
-      console.log(response.data);
-      
-  
-      const salesTransactions = response.data.filter(
-        (transaction) => transaction.transaction_type === "purchase"
-      );
-
-      // Extract unique customers
-      const uniqueCustomers = [];
-      const seenUsernames = new Set();
-
-      salesTransactions.forEach((transaction) => {
-        if (!seenUsernames.has(transaction.username)) {
-          seenUsernames.add(transaction.username);
-          uniqueCustomers.push({
-            username: transaction.username,
-            billing_address: transaction.billing_address || "N/A",
-            email: transaction.email || "N/A",
-            contact_number: transaction.contact_number || "N/A",
-          });
-        }
+      const token = Cookies.get("access_token");
+      const response = await axios.get(`${BASE_URL}/partner/partners/?page=${page}&partner_type=vendor`, {
+        headers: { Authorization: `Bearer ${token}` },
       });
-
-      setCustomers(uniqueCustomers);
+      setCustomers(response.data.results);  
+      setTotalPages(response.data.total_pages);
     } catch (error) {
+      console.error("Error fetching customers:", error);
       setError("Error fetching customers");
     } finally {
       setLoading(false);
     }
   };
 
-  // Pagination logic
-  const indexOfLastData = currentPage * dataPerPage;
-  const indexOfFirstData = indexOfLastData - dataPerPage;
-  const currentData = customers.slice(indexOfFirstData, indexOfLastData);
-
   const paginate = (pageNumber) => {
     setCurrentPage(pageNumber);
   };
-
-  const totalPages = Math.ceil(customers.length / dataPerPage);
-  const pageNumbers = Array.from({ length: totalPages }, (_, i) => i + 1);
 
   if (loading) return <p>Loading customers...</p>;
   if (error) return <p>{error}</p>;
@@ -71,21 +46,33 @@ const AllCustomerTable = () => {
         <Table striped bordered hover>
           <thead>
             <tr>
-              <th>Username</th>
-              <th>Billing Address</th>
+              <th>Profile ID</th>
+              <th>Name</th>
               <th>Email</th>
-              <th>contact number</th>
+              <th>Contact Number</th>
+              <th>Secondary Contact</th>
+              <th>Company Name</th>
             </tr>
           </thead>
           <tbody>
-            {currentData.map((customer, index) => (
-              <tr key={index}>
-                <td>{customer.username}</td>
-                <td>{customer.email}</td>
-                <td>{customer.contact_number}</td>
-                <td>{customer.billing_address}</td>
+            {customers.length > 0 ? (
+              customers.map((customer, index) => (
+                <tr key={index}>
+                  <td>{customer.profile_id}</td>
+                  <td>{`${customer.first_name} ${customer.last_name}`}</td>
+                  <td>{customer.email || "N/A"}</td>
+                  <td>{customer.contact_number || "N/A"}</td>
+                  <td>{customer.secondary_contact || "N/A"}</td>
+                  <td>{customer.company_name || "N/A"}</td>
+                </tr>
+              ))
+            ) : (
+              <tr>
+                <td colSpan="6" className="text-center">
+                  No customers found.
+                </td>
               </tr>
-            ))}
+            )}
           </tbody>
         </Table>
       </OverlayScrollbarsComponent>
@@ -93,7 +80,7 @@ const AllCustomerTable = () => {
         currentPage={currentPage}
         totalPages={totalPages}
         paginate={paginate}
-        pageNumbers={pageNumbers}
+        pageNumbers={Array.from({ length: totalPages }, (_, i) => i + 1)}
       />
     </>
   );
