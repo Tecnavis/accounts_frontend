@@ -110,7 +110,7 @@ const InvoicePage = () => {
                     <ul style={{ listStyle: 'none', padding: 0 }}>
                       <li><span>Name:</span> {invoiceData.partner.first_name}{invoiceData.partner.last_name}</li>
                       <li><span>Email:</span> {invoiceData.partner.email}</li>
-                      <li><span>Phone:</span> {invoiceData.contact_number}</li>
+                      <li><span>Phone:</span> {invoiceData.partner.contact_number}</li>
                       <li><span>Transaction ID:</span> {invoiceData.transaction_id}</li>
                       <li><span>Purchase Date:</span> {invoiceData.sale_date}</li>
                     </ul>
