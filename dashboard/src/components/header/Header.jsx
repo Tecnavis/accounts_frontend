@@ -37,21 +37,18 @@ const Header = () => {
       <div className="row g-0 align-items-center">
         <div className="col-xxl-6 col-xl-5 col-4 d-flex align-items-center gap-20">
           <div className="main-logo d-lg-block d-none">
-            <div className="logo-big">
-              <Link to="/">
-                <img
-                  src={`${
-                    isLightTheme
-                      ? "assets/images/logo-black.png"
-                      : "assets/images/logo-big.png"
-                  }`}
-                  alt="Logo"
-                />
-              </Link>
+            <div>
+            <Link to="/">
+              <img
+                src="assets/images/neo.png"
+                alt="Logo"
+                style={{ width: "120px", height: "auto", maxHeight: "60px" }}
+              />
+            </Link>
             </div>
             <div className="logo-small">
               <Link to="/">
-                <img src="assets/images/logo-small.png" alt="Logo" />
+                <img src="assets/images/neo1.png" alt="Logo" />
               </Link>
             </div>
           </div>
@@ -78,13 +75,13 @@ const Header = () => {
           {isLightTheme ? (
             <div className="mobile-logo">
               <Link to="/">
-                <img src="assets/images/logo-black.png" alt="Logo" />
+                <img src="assets/images/neo3.png" alt="Logo" />
               </Link>
             </div>
           ) : (
             <div className="mobile-logo">
               <Link to="/">
-                <img src="assets/images/logo-big.png" alt="Logo" />
+                <img src="assets/images/neo.png" alt="Logo" />
               </Link>
             </div>
           )}
@@ -132,12 +129,6 @@ const Header = () => {
             >
               <i className="fa-light fa-ellipsis-vertical"></i>
             </button>
-            {/* <button
-              className="header-btn theme-settings-btn d-lg-none"
-              onClick={handleSettingsToggle}
-            >
-              <i className="fa-light fa-gear"></i>
-            </button> */}
             <HeaderProfile />
           </div>
         </div>

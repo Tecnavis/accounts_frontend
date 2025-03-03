@@ -13,9 +13,6 @@ const LoginContent = () => {
           <div className="logo">
             <img src="assets/images/logo-big.png" alt="Logo" />
           </div>
-          {/* <Link to="/">
-            <i className="fa-duotone fa-house-chimney"></i>
-          </Link> */}
         </div>
         <div className="bottom">
           <h3 className="panel-title">Login</h3>

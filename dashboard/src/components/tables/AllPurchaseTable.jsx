@@ -99,7 +99,7 @@ const PurchaseReportTable = () => {
         <thead>
           <tr>
             <th>Transaction ID</th>
-            <th>Username</th>
+            <th>Name</th>
             <th>Service</th>
             <th>Payment Status</th>
             {/* <th>Payment Mode</th> */}
@@ -114,6 +114,11 @@ const PurchaseReportTable = () => {
         <tbody>
           {transactions
             .filter((transaction) => transaction.transaction_type === "purchase")
+            .sort((a, b) => {
+              const dateDiff = new Date(b.sale_date) - new Date(a.sale_date); 
+              if (dateDiff !== 0) return dateDiff; 
+              return new Date(b.updated_at) - new Date(a.updated_at); 
+            })
             .map((transaction) => (
               <tr key={transaction.id}>
                 <td>
@@ -125,7 +130,17 @@ const PurchaseReportTable = () => {
                   </Link>
                 </td>
 
-                <td>{transaction.username}</td>
+                <td>
+                  {transaction.partner ? (
+                    <>
+                      <strong>{transaction.partner.first_name} {transaction.partner.last_name}</strong>
+                      <br />
+                      📞 {transaction.partner.contact_number}
+                      <br />
+                      {/* ✉️ {transaction.partner.email} */}
+                    </>
+                  ) : "N/A"}
+                </td>
                 <td>{transaction.service_name}</td>
                 <td>{transaction.payment_status}</td>
                 {/* <td>{transaction.payments?.[0]?.payment_mode || "N/A"}</td> */}

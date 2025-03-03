@@ -18,15 +18,11 @@ const CrmDashboardMainContent = () => {
         <CrmDashboardCards/>
         <div className="row">
             <BalanceOverview/>
-            <RecentProjects/>
+            {/* <RecentProjects/> */}
             <UpcomingProjects/>
             <PendingWork/>
             <div className="col-xl-8 col-lg-7">
-              {/* <Invoices/> */}
             </div>
-            {/* <MyTasks/> */}
-            {/* <NoticeBoard/> */}
-            {/* <Deadlines/> */}
         </div>
 
         <Footer/>

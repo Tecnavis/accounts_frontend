@@ -82,6 +82,7 @@ const PurchaseReportTable = () => {
 
   const fetchPayments = async (transactionId) => {
     try {
+      
       const response = await axios.get(`${BASE_URL}/financials/transactions/${transactionId}/payments/`);
       setPayments(response.data);
       setShowPaymentsModal(true);
@@ -131,7 +132,7 @@ const PurchaseReportTable = () => {
                       <br />
                       📞 {transaction.partner.contact_number}
                       <br />
-                      ✉️ {transaction.partner.email}
+                      {/* ✉️ {transaction.partner.email} */}
                     </>
                   ) : "N/A"}
                 </td>

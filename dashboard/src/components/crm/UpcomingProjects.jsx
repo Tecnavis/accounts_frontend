@@ -52,7 +52,7 @@ const UnpaidTransactions = () => {
                 transactions.map((transaction) => (
                   <tr key={transaction.id}>
                     <td>{transaction.transaction_id}</td>
-                    <td>{transaction.username}</td>
+                    <td>{transaction.partner?.first_name || "N/A"}</td>
                     <td>{new Date(transaction.sale_date).toLocaleDateString("en-GB", {
                       day: "2-digit",
                       month: "short",

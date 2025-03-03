@@ -3,7 +3,7 @@ import BalanceChart from '../charts/BalanceChart'
 
 const BalanceOverview = () => {
   return (
-    <div className="col-lg-8">
+    <div className="col-lg-12">
         <div className="panel chart-panel-1">
             <div className="panel-header">
                 <h5>Balance Overview</h5>
