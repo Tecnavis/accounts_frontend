@@ -22,9 +22,7 @@ const AllEmployeeTable = () => {
       const result = await response.json();
   
       if (Array.isArray(result) && result.length > 0) {
-        // Filter users where role is 'staff'
         const staffUsers = result.filter(user => user.role === "staff");
-  
         const formattedData = staffUsers.map((user) => ({
           employee_id: user.id,
           username: user.username,
@@ -57,13 +55,13 @@ const AllEmployeeTable = () => {
     }
   };
   const handleOpenEditModal = (employee) => {
-    setSelectedEmployee({ ...employee, isEditing: true }); 
+    setSelectedEmployee({ ...employee, isEditing: true });
     setShowModal(true);
-  };
+};
 
   const handleUpdateEmployee = async () => {
     try {
-      const response = await fetch(`${BASE_URL}/users/staffs/${selectedEmployee.id}/`, {
+      const response = await fetch(`${BASE_URL}/users/staffs/${selectedEmployee.employee_id}/`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -234,9 +232,6 @@ const AllEmployeeTable = () => {
         </div>
       )}
 
-
-
-
       {/* Edit Employee Modal */}
       {showModal && selectedEmployee?.isEditing && (
         <div className="modal fade show d-block" tabIndex="-1" role="dialog">
@@ -284,8 +279,9 @@ const AllEmployeeTable = () => {
                       className="form-control"
                       value={selectedEmployee.contact_number || ""}
                       onChange={(e) =>
-                        setSelectedEmployee({ ...selectedEmployee, role: e.target.contact_number })
+                        setSelectedEmployee({ ...selectedEmployee, contact_number: e.target.value })
                       }
+                      required
                     />
                   </div>
                   <div className="modal-footer justify-content-center">
@@ -306,12 +302,9 @@ const AllEmployeeTable = () => {
           </div>
         </div>
       )}
-
-
     </>
   );
 };
-
 export default AllEmployeeTable;
 
 

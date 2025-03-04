@@ -16,6 +16,7 @@ const AllAdminTable = () => {
 
   useEffect(() => {
     fetchStaffUsers();
+    
   }, []);
   
   const fetchStaffUsers = async () => {
@@ -24,9 +25,7 @@ const AllAdminTable = () => {
       const result = await response.json();
   
       if (Array.isArray(result) && result.length > 0) {
-     
         const staffUsers = result.filter(user => user.role === "admin");
-  
         const formattedData = staffUsers.map((user) => ({
           employee_id: user.id,
           username: user.username,
@@ -60,11 +59,6 @@ const AllAdminTable = () => {
   };
 
   const handleOpenEditModal = (employee) => {
-    // console.log("Selected Employee:", employee);  // Debugging
-    // if (!employee || !employee.employee_id) {
-    //     console.error("Error: Employee ID is missing!", employee);
-    //     return;
-    // }
     setSelectedEmployee({ ...employee, isEditing: true });
     setShowModal(true);
 };
@@ -88,7 +82,7 @@ const handleUpdateEmployee = async () => {
         },{
           headers: {
               "Content-Type": "application/json",
-              "Authorization": `Bearer ${Cookies.get("access_token")}` // ✅ Add Token Here
+              "Authorization": `Bearer ${Cookies.get("access_token")}` 
           }
     });
 
