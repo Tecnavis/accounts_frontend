@@ -3,6 +3,7 @@ import PaginationSection from "./PaginationSection";
 import { DigiContext } from "../../context/DigiContext";
 import { BASE_URL } from "../../api";
 import Cookies from "js-cookie";
+import axios from "axios";
 
 const AllAdminTable = () => {
   const { isBelowLg } = useContext(DigiContext);
@@ -59,38 +60,43 @@ const AllAdminTable = () => {
   };
 
   const handleOpenEditModal = (employee) => {
-    setSelectedEmployee({ ...employee, isEditing: true }); 
+    // console.log("Selected Employee:", employee);  // Debugging
+    // if (!employee || !employee.employee_id) {
+    //     console.error("Error: Employee ID is missing!", employee);
+    //     return;
+    // }
+    setSelectedEmployee({ ...employee, isEditing: true });
     setShowModal(true);
-  };
-  
-  const handleUpdateEmployee = async () => {
-    try {
-      const response = await fetch(`${BASE_URL}/users/admin/${selectedEmployee.id}/`, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-          "Authorization": `Bearer ${Cookies.get("access_token")}`
-        },
-        body: JSON.stringify({
-          username: selectedEmployee.username,
-          email: selectedEmployee.email,
-          contact_number: selectedEmployee.contact_number,
-        }),
-      });
-  
-      if (response.ok) {
-        const updatedData = await response.json();
-        console.log("Updated Employee:", updatedData);
-        fetchStaffUsers(); 
-        setShowModal(false); 
-      } else {
-        console.error("Error updating employee:", await response.json());
-      }
-    } catch (error) {
-      console.error("Network error:", error);
+};
+
+const handleUpdateEmployee = async () => {
+
+    if (!selectedEmployee || !selectedEmployee.employee_id) {
+        console.error("Error: Employee ID is undefined", selectedEmployee);
+        return;
     }
-  };
- 
+
+    try {
+        const apiUrl = `${BASE_URL}/users/admin/${selectedEmployee.employee_id}/`;
+        console.log("API URL:", apiUrl); 
+        
+        const response = await axios.put(apiUrl, {
+            username: selectedEmployee.username,
+            email: selectedEmployee.email,
+            contact_number: selectedEmployee.contact_number,
+            password: selectedEmployee.password,
+        },{
+          headers: {
+              "Content-Type": "application/json",
+              "Authorization": `Bearer ${Cookies.get("access_token")}` // ✅ Add Token Here
+          }
+    });
+
+        console.log("Update Successful:", response.data);
+    } catch (error) {
+        console.error("Error updating employee:", error.response?.data || error);
+    }
+};
   const handleDeleteEmployee = async (id) => {
     if (window.confirm("Are you sure you want to delete this employee?")) {
       try {
@@ -184,7 +190,7 @@ const AllAdminTable = () => {
                   </div>
                 </td>
                 <td>{data.employee_id}</td>
-                <td>{data.first_name}</td>
+                <td>{data.username}</td>
                 <td>{data.contact_number}</td>
                 <td>{data.email}</td>
               </tr>
@@ -198,10 +204,7 @@ const AllAdminTable = () => {
           )}
         </tbody>
       </table>
-
       {totalPages > 1 && <PaginationSection currentPage={currentPage} totalPages={totalPages} paginate={paginate} />}
-
-      
 
       {/* View Employee Modal */}
       {showModal && selectedEmployee && !selectedEmployee.isEditing && (
@@ -253,6 +256,7 @@ const AllAdminTable = () => {
                     handleUpdateEmployee();
                   }}
                 >
+                  {/* Username Field */}
                   <div className="mb-3">
                     <label className="form-label">Name</label>
                     <input
@@ -265,6 +269,8 @@ const AllAdminTable = () => {
                       required
                     />
                   </div>
+
+                  {/* Email Field */}
                   <div className="mb-3">
                     <label className="form-label">Email</label>
                     <input
@@ -277,6 +283,8 @@ const AllAdminTable = () => {
                       required
                     />
                   </div>
+
+                  {/* Contact Number Field */}
                   <div className="mb-3">
                     <label className="form-label">Phone</label>
                     <input
@@ -284,10 +292,25 @@ const AllAdminTable = () => {
                       className="form-control"
                       value={selectedEmployee.contact_number || ""}
                       onChange={(e) =>
-                        setSelectedEmployee({ ...selectedEmployee, role: e.target.contact_number })
+                        setSelectedEmployee({ ...selectedEmployee, contact_number: e.target.value })
                       }
                     />
                   </div>
+
+                  {/* Password Field (Leave Empty for New Password) */}
+                  <div className="mb-3">
+                    <label className="form-label">New Password</label>
+                    <input
+                      type="password"
+                      className="form-control"
+                      placeholder="Enter new password (optional)"
+                      onChange={(e) =>
+                        setSelectedEmployee({ ...selectedEmployee, password: e.target.value })
+                      }
+                    />
+                  </div>
+
+                  {/* Modal Footer */}
                   <div className="modal-footer justify-content-center">
                     <button type="submit" className="btn btn-success px-4">
                       Save

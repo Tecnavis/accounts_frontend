@@ -82,6 +82,8 @@ const AllCustomerTable = () => {
               username: selectedEmployee.username,
               email: selectedEmployee.email,
               contact_number: selectedEmployee.contact_number,
+              secondary_contact: selectedEmployee.secondary_contact,
+              company_name: selectedEmployee.company_name,
             }),
           });
       
@@ -177,7 +179,7 @@ const AllCustomerTable = () => {
                         </button>
                       </li>
                       <li>
-                      <button className="dropdown-item" onClick={() => handleOpenEditModal(customer)}>
+                      <button className="dropdown-item" onClick={() => handleOpenEditModal(customer.id)}>
                           <span className="dropdown-icon">
                             <i className="fa-light fa-pen-nib"></i>
                           </span>
@@ -242,48 +244,109 @@ const AllCustomerTable = () => {
             </div>
           </div>
         )}
-      {showModal && selectedEmployee && (
-      <div className="modal fade show d-block" tabIndex="-1" role="dialog">
-        <div className="modal-dialog modal-dialog-centered">
-          <div className="modal-content">
-            <div className="modal-header">
-              <h5 className="modal-title">Update Employee</h5>
-              <button type="button" className="btn-close" onClick={() => setShowModal(false)}></button>
+        {showModal && selectedEmployee && (
+  <div className="modal fade show d-block" tabIndex="-1" role="dialog">
+    <div className="modal-dialog modal-dialog-centered">
+      <div className="modal-content">
+        <div className="modal-header">
+          <h5 className="modal-title">Update Employee</h5>
+          <button type="button" className="btn-close" onClick={() => setShowModal(false)}></button>
+        </div>
+        <div className="modal-body">
+          <form>
+            {/* Profile ID (Assuming it's not editable) */}
+            <div className="mb-3">
+              <label className="form-label">Profile ID</label>
+              <input
+                type="text"
+                className="form-control"
+                value={selectedEmployee.profile_id || ''}
+                disabled // Making Profile ID non-editable
+              />
             </div>
-            <div className="modal-body">
-              <form>
-                <div className="mb-3">
-                  <label className="form-label">Username</label>
-                  <input type="text" className="form-control" value={selectedEmployee.username || ''} 
-                    onChange={(e) => setSelectedEmployee({ ...selectedEmployee, username: e.target.value })}
-                  />
-                </div>
-                <div className="mb-3">
-                  <label className="form-label">Email</label>
-                  <input type="email" className="form-control" value={selectedEmployee.email || ''} 
-                    onChange={(e) => setSelectedEmployee({ ...selectedEmployee, email: e.target.value })}
-                  />
-                </div>
-                <div className="mb-3">
-                  <label className="form-label">Contact Number</label>
-                  <input type="text" className="form-control" value={selectedEmployee.contact_number || ''} 
-                    onChange={(e) => setSelectedEmployee({ ...selectedEmployee, contact_number: e.target.value })}
-                  />
-                </div>
-              </form>
+
+            {/* Name */}
+            <div className="mb-3">
+              <label className="form-label">Name</label>
+              <input
+                type="text"
+                className="form-control"
+                value={selectedEmployee.first_name || ''}
+                onChange={(e) =>
+                  setSelectedEmployee({ ...selectedEmployee, username: e.target.value })
+                }
+              />
             </div>
-            <div className="modal-footer">
-              <button type="button" className="btn btn-secondary" onClick={() => setShowModal(false)}>
-                Close
-              </button>
-              <button type="button" className="btn btn-primary" onClick={handleUpdateEmployee}>
-                Save changes
-              </button>
+
+            {/* Email */}
+            <div className="mb-3">
+              <label className="form-label">Email</label>
+              <input
+                type="email"
+                className="form-control"
+                value={selectedEmployee.email || ''}
+                onChange={(e) =>
+                  setSelectedEmployee({ ...selectedEmployee, email: e.target.value })
+                }
+              />
             </div>
-          </div>
+
+            {/* Contact Number */}
+            <div className="mb-3">
+              <label className="form-label">Contact Number</label>
+              <input
+                type="text"
+                className="form-control"
+                value={selectedEmployee.contact_number || ''}
+                onChange={(e) =>
+                  setSelectedEmployee({ ...selectedEmployee, contact_number: e.target.value })
+                }
+              />
+            </div>
+
+            {/* Secondary Contact */}
+            <div className="mb-3">
+              <label className="form-label">Secondary Contact</label>
+              <input
+                type="text"
+                className="form-control"
+                value={selectedEmployee.secondary_contact || ''}
+                onChange={(e) =>
+                  setSelectedEmployee({ ...selectedEmployee, secondary_contact: e.target.value })
+                }
+              />
+            </div>
+
+            {/* Company Name */}
+            <div className="mb-3">
+              <label className="form-label">Company Name</label>
+              <input
+                type="text"
+                className="form-control"
+                value={selectedEmployee.company_name || ''}
+                onChange={(e) =>
+                  setSelectedEmployee({ ...selectedEmployee, company_name: e.target.value })
+                }
+              />
+            </div>
+          </form>
+        </div>
+
+        {/* Modal Footer */}
+        <div className="modal-footer">
+          <button type="button" className="btn btn-secondary" onClick={() => setShowModal(false)}>
+            Close
+          </button>
+          <button type="button" className="btn btn-primary" onClick={handleUpdateEmployee}>
+            Save changes
+          </button>
         </div>
       </div>
-    )}
+    </div>
+  </div>
+)}
+
+
       </OverlayScrollbarsComponent>
       <PaginationSection
         currentPage={currentPage}
