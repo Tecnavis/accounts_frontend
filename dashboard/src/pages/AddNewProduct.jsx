@@ -14,20 +14,9 @@ const AddNewProduct = () => {
         <AddNewBreadcrumb link={"/allProduct"} title={'Add New Service'}/>
         <div className="row g-4">
             <div className="col-xxl-12 col-lg-12">
-                {/* <NewProductTitle/> */}
-                {/* <ProductDescription/> */}
-                <ProductData/>
-                
+                <ProductData/>   
             </div>
-            {/* <div className="col-xxl-3 col-lg-4 add-product-sidebar">
-                <div className="mb-30 w-100">
-                    <Link to="#" className="btn btn-primary d-block">Add New Category</Link>
-                </div>
-                <CategorySection/>
-                <ProductTags/>
-            </div> */}
         </div>
-
         <Footer/>
     </div>
   )

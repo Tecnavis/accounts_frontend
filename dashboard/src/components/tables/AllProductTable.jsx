@@ -80,17 +80,17 @@ const AllProductTable = ({ categoryId }) => {
             alert("No service selected for deletion.");
             return;
         }
-
+    
         try {
-            await axios.delete(`<span class="math-inline">\{BASE\_URL\}/services/services/</span>{selectedService.id}/delete/`);
-            fetchServices();
-            setShowDeleteModal(false);
+            await axios.delete(`${BASE_URL}/services/services/${selectedService.id}/delete/`);
+            fetchServices(); // Refresh the service list after deletion
+            setShowDeleteModal(false); // Close the delete modal
         } catch (error) {
             console.error("Error deleting service:", error);
             alert("Failed to delete service");
         }
     };
-
+    
     const indexOfLastData = currentPage * dataPerPage;
     const indexOfFirstData = indexOfLastData - dataPerPage;
     const currentData = services.slice(indexOfFirstData, indexOfLastData);
