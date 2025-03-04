@@ -15,10 +15,6 @@ const ProfileMainContent = () => {
             <div className="col-md-12">
                 <UserInformation/>
             </div>
-            {/* <div className="col-md-8">
-                {/* <ViewProfileCards/> */}
-                {/* <UserActivity/> */}
-            {/* </div>  */}
         </div>
 
         <Footer/>

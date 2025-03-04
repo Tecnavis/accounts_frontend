@@ -56,6 +56,10 @@ const AllEmployeeTable = () => {
       console.error("Error fetching employee details:", error);
     }
   };
+  const handleOpenEditModal = (employee) => {
+    setSelectedEmployee({ ...employee, isEditing: true }); 
+    setShowModal(true);
+  };
 
   const handleUpdateEmployee = async () => {
     try {
@@ -75,32 +79,13 @@ const AllEmployeeTable = () => {
       if (response.ok) {
         const updatedData = await response.json();
         console.log("Updated Employee:", updatedData);
-        fetchStaffUsers(); // Refresh employee list
-        setShowModal(false); // Close modal after update
+        fetchStaffUsers(); 
+        setShowModal(false); 
       } else {
         console.error("Error updating employee:", await response.json());
       }
     } catch (error) {
       console.error("Network error:", error);
-    }
-  };
-  
-  const handleRevokeEmployee = async () => {
-    try {
-      const response = await fetch(`${BASE_URL}/users/staffs/revoke/${selectedEmployee.id}/`, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-          "Authorization": `Bearer ${Cookies.get("access_token")}`
-        },
-        body: JSON.stringify({ is_active: false }),
-      });
-      if (response.ok) {
-        fetchStaffUsers(); 
-        setShowModal(false);
-      }
-    } catch (error) {
-      console.error("Error revoking employee:", error);
     }
   };
  
@@ -176,12 +161,13 @@ const AllEmployeeTable = () => {
                         </button>
                       </li>
                       
+                     
                       <li>
-                        <button className="dropdown-item" onClick={() => handleRevokeEmployee(data.employee_id)}>
+                        <button className="dropdown-item" onClick={() => handleOpenEditModal(data)}>
                           <span className="dropdown-icon">
                             <i className="fa-light fa-pen-nib"></i>
                           </span>
-                          Revoke
+                          Update
                         </button>
                       </li>
                       <li>
@@ -212,8 +198,6 @@ const AllEmployeeTable = () => {
       </table>
 
       {totalPages > 1 && <PaginationSection currentPage={currentPage} totalPages={totalPages} paginate={paginate} />}
-
-      
 
       {/* View Employee Modal */}
       {showModal && selectedEmployee && !selectedEmployee.isEditing && (

@@ -12,7 +12,7 @@ const InvoicePage = () => {
   const [creatorData, setCreatorData] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  // Inject print-specific styles dynamically
+
   useEffect(() => {
     const style = document.createElement("style");
     style.innerHTML = `
@@ -129,7 +129,6 @@ const InvoicePage = () => {
                 </div>
               </div>
             </div>
-
             <div className="table-responsive mb-30">
               <table className="table table-bordered mb-0 invoice-table" style={{ width: '100%', borderCollapse: 'collapse' }}>
                 <thead>
@@ -185,7 +184,6 @@ const InvoicePage = () => {
                 </table>
               </div>
             </div>
-
             <div className="total-payment-area row justify-content-end mb-30">
               <div className="col-md-4">
                 <ul style={{ listStyle: 'none', padding: 0 }}>
@@ -197,7 +195,6 @@ const InvoicePage = () => {
             </div>
           </div>
         </div>
-
         <div className="panel-body border-top">
           <div className="btn-box d-flex justify-content-end gap-2">
             <button className="btn btn-sm btn-primary" onClick={handlePrint}>

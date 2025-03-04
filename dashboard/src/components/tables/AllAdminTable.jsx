@@ -16,6 +16,7 @@ const AllAdminTable = () => {
   useEffect(() => {
     fetchStaffUsers();
   }, []);
+  
   const fetchStaffUsers = async () => {
     try {
       const response = await fetch(`${BASE_URL}/users/staffs/`);
@@ -57,6 +58,11 @@ const AllAdminTable = () => {
     }
   };
 
+  const handleOpenEditModal = (employee) => {
+    setSelectedEmployee({ ...employee, isEditing: true }); 
+    setShowModal(true);
+  };
+  
   const handleUpdateEmployee = async () => {
     try {
       const response = await fetch(`${BASE_URL}/users/admin/${selectedEmployee.id}/`, {
@@ -82,25 +88,6 @@ const AllAdminTable = () => {
       }
     } catch (error) {
       console.error("Network error:", error);
-    }
-  };
-
-  const handleRevokeEmployee = async () => {
-    try {
-      const response = await fetch(`${BASE_URL}/users/staffs/revoke/${selectedEmployee.id}/`, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-          "Authorization": `Bearer ${Cookies.get("access_token")}`
-        },
-        body: JSON.stringify({ is_active: false }),
-      });
-      if (response.ok) {
-        fetchStaffUsers(); 
-        setShowModal(false);
-      }
-    } catch (error) {
-      console.error("Error revoking employee:", error);
     }
   };
  
@@ -177,13 +164,14 @@ const AllAdminTable = () => {
                       </li>
                       
                       <li>
-                        <button className="dropdown-item" onClick={() => handleRevokeEmployee(data.employee_id)}>
+                        <button className="dropdown-item" onClick={() => handleOpenEditModal(data)}>
                           <span className="dropdown-icon">
                             <i className="fa-light fa-pen-nib"></i>
                           </span>
-                          Revoke
+                          Update
                         </button>
                       </li>
+                      
                       <li>
                         <button className="dropdown-item" onClick={() => handleDeleteEmployee(data.employee_id)}>
                           <span className="dropdown-icon">
@@ -196,7 +184,7 @@ const AllAdminTable = () => {
                   </div>
                 </td>
                 <td>{data.employee_id}</td>
-                <td>{data.username}</td>
+                <td>{data.first_name}</td>
                 <td>{data.contact_number}</td>
                 <td>{data.email}</td>
               </tr>
@@ -249,10 +237,6 @@ const AllAdminTable = () => {
           </div>
         </div>
       )}
-
-
-
-
       {/* Edit Employee Modal */}
       {showModal && selectedEmployee?.isEditing && (
         <div className="modal fade show d-block" tabIndex="-1" role="dialog">
@@ -322,8 +306,6 @@ const AllAdminTable = () => {
           </div>
         </div>
       )}
-
-
     </>
   );
 };

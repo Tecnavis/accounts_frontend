@@ -121,7 +121,7 @@ function App() {
 
             <Route path="/invoice/:id" element={<Invoices />} />
             <Route path="/profile" element={<Profile/>}/>
-            <Route path="/editProfile" element={<EditProfile/>}/>
+            {/* <Route path="/editProfile" element={<EditProfile/>}/> */}
           </Route>
         </Route>        
       </Routes>
