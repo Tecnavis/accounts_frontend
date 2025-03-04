@@ -65,7 +65,7 @@ const AllCustomerTable = () => {
             throw new Error("Invalid data received");
           }      
     
-          setSelectedEmployee({ ...data, isEditing: false }); // Explicitly setting isEditing to false
+          setSelectedEmployee({ ...data, isEditing: false });
           setShowModal(true);
         } catch (error) {
           console.error("Error fetching employee details:", error);
@@ -97,7 +97,7 @@ const AllCustomerTable = () => {
     setCustomers((prevCustomers) =>
       prevCustomers.map((customer, i) => ({
         ...customer,
-        showDropdown: i === index ? !customer.showDropdown : false, // Toggle only the clicked dropdown
+        showDropdown: i === index ? !customer.showDropdown : false, 
       }))
     );
   };
