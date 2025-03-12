@@ -22,7 +22,7 @@ const SaleData = () => {
     const [formData, setFormData] = useState({
         username: "",
         service: "",
-        partner: "", // This will hold the partner ID
+        partner: "", 
         amount_paid: "",
         payment_mode: "cash",
         sale_date: new Date().toISOString().split("T")[0],
@@ -61,7 +61,7 @@ const SaleData = () => {
                     headers: authHeader
                 });
     
-                setPartners(partnersResponse.data);
+                setPartners(partnersResponse.data.results);
             } catch (error) {
                 console.error("Error fetching data:", error);
                 setErrorMessage("Error fetching necessary data. Please try again later.");
@@ -71,13 +71,25 @@ const SaleData = () => {
     }, []);
 
     
-    const filteredPartners = partners.filter(partner => {
+    // const filteredPartners = partners.filter(partner => {
+    //     if (formData.transaction_type === "sale") {
+    //         return partner.partner_type === "customer";
+    //     } else {
+    //         return partner.partner_type === "vendor";
+    //     }
+    // });
+    
+    const filteredPartners = Array.isArray(partners) ? partners.filter(partner => {
+        console.log("Checking Partner:", partner); 
         if (formData.transaction_type === "sale") {
             return partner.partner_type === "customer";
         } else {
             return partner.partner_type === "vendor";
         }
-    });
+    }) : [];
+    
+    console.log("Filtered Partners:", filteredPartners);
+    
 
     const validateForm = () => {
         let newErrors = {};
@@ -123,7 +135,6 @@ const SaleData = () => {
             [name]: value,
         }));
 
-        // Reset partner selection when transaction type changes
         if (name === "transaction_type") {
             setFormData(prev => ({
                 ...prev,
@@ -253,29 +264,6 @@ const SaleData = () => {
                         </select>
                     </div>
                 </div>
-
-                {/* <div className="row g-3 mb-3">
-                    <label htmlFor="partner" className="col-md-2 col-form-label col-form-label-sm">
-                        {formData.transaction_type === "sale" ? "Customer" : "Vendor"}
-                    </label>
-                    <div className="col-md-6">
-                    <select
-                        id="partner"
-                        name="partner"
-                        className="form-control form-control-sm"
-                        value={formData.partner}
-                        onChange={handleInputChange}
-                    >
-                        <option value="">Select {formData.transaction_type === "sale" ? "Customer" : "Vendor"}</option>
-                        {filteredPartners.map((partner) => (
-                            <option key={partner.id} value={partner.id}>
-                                {partner.first_name} {partner.last_name}
-                            </option>
-                        ))}
-                    </select>
-
-                    </div>
-                </div> */}
 
                 <div className="row g-3 mb-3">
                     <label
