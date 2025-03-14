@@ -5,7 +5,7 @@ import { BASE_URL } from "../../api";
 import Cookies from "js-cookie";
 import ReactSelect from "react-select";
 
-const PurchaseData = () => {
+const PurchasesData = () => {
     const [services, setServices] = useState([]);
     const [partners, setPartners] = useState([]);
     const [selectedService, setSelectedService] = useState(null);
@@ -558,6 +558,6 @@ const PurchaseData = () => {
         </div>
     );
 };
-export default PurchaseData;
+export default PurchasesData;
 
 
