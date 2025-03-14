@@ -33,6 +33,7 @@ const SaleData = () => {
         country: "saudi",
         vat_type: "",
         discount_amount:"",
+
     });
 
     const getAuthHeader = () => {
@@ -89,7 +90,6 @@ const SaleData = () => {
     }) : [];
     
     console.log("Filtered Partners:", filteredPartners);
-    
 
     const validateForm = () => {
         let newErrors = {};
@@ -260,10 +260,10 @@ const SaleData = () => {
                             onChange={handleInputChange}
                         >
                             <option value="sale">Sale</option>
-                            <option value="purchase">Purchase</option>
+                            {/* <option value="purchase">Purchase</option> */}
                         </select>
                     </div>
-                </div>
+                </div> 
 
                 <div className="row g-3 mb-3">
                     <label

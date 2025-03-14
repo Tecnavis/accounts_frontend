@@ -16,7 +16,7 @@ const SalesData = () => {
         <div className={`panel-body ${productDataBtn? 'd-none':''}`}>
            {/* <ProductDataTab/> */}
            <SaleData/>
-        </div>
+        </div>   
     </div>
   )
 }

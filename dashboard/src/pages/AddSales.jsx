@@ -15,13 +15,10 @@ const AddSales = () => {
         <div className="row g-4">
             <div className="col-xxl-12 col-lg-12">               
                 <SalesData/>
-
             </div>
         </div>
-
         <Footer/>
     </div>
   )
 }
-
 export default AddSales

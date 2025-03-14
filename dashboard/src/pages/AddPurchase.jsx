@@ -15,11 +15,9 @@ const AddPurchases = () => {
         <div className="row g-4">
             <div className="col-xxl-12 col-lg-12">               
                 <PurchaseData/>
-
             </div>
         </div>
-
-        <Footer/>
+      <Footer/>
     </div>
   )
 }
