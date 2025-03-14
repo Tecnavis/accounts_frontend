@@ -33,7 +33,7 @@ const DashboardPart = () => {
             <span className="nav-icon">
               <i className="fa-light fa-user-headset"></i>
             </span>{' '}
-            <span className="sidebar-txt">Inventory</span>
+            <span className="sidebar-txt">Overview</span>
           </NavLink>
         </li>
         <li className="sidebar-dropdown-item">

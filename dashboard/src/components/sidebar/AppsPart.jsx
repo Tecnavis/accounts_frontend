@@ -57,7 +57,7 @@ const AppsPart = () => {
             <span className="nav-icon">
               <i className="fa-light fa-user-headset"></i>
             </span>{' '}
-            <span className="sidebar-txt">Inventory</span>
+            <span className="sidebar-txt">Transaction</span>
           </Link>
           <ul
             className={`sidebar-dropdown-menu ${
@@ -90,7 +90,7 @@ const AppsPart = () => {
             <span className="nav-icon">
               <i className="fa-light fa-user-tie"></i>
             </span>{' '}
-            <span className="sidebar-txt">HRM</span>
+            <span className="sidebar-txt">Account Master</span>
           </Link>
           <ul
             className={`sidebar-dropdown-menu ${
@@ -136,7 +136,7 @@ const AppsPart = () => {
             <span className="nav-icon">
               <i className="fa-light fa-cart-shopping-fast"></i>
             </span>{' '}
-            <span className="sidebar-txt">eCommerce</span>
+            <span className="sidebar-txt">Item Master</span>
           </Link>
           <ul
             className={`sidebar-dropdown-menu ${
