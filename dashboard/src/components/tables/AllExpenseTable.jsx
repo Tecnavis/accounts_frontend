@@ -1,8 +1,183 @@
+// import React, { useState, useEffect, useRef } from "react";
+// import axios from "axios";
+// import { Table } from "react-bootstrap";
+// import { OverlayScrollbarsComponent } from "overlayscrollbars-react";
+// import { BASE_URL } from "../../api";
+// import Cookies from "js-cookie";
+
+// const AllExpenseTable = () => {
+//   const [expenses, setExpenses] = useState([]);
+//   const [loading, setLoading] = useState(true);
+//   const [error, setError] = useState(null);
+//   const [selectedExpense, setSelectedExpense] = useState(null);
+//   const [showModal, setShowModal] = useState(false);
+
+//   const dropdownRef = useRef(null);
+
+//   useEffect(() => {
+//     fetchExpenses();
+//   }, []);
+
+//   const fetchExpenses = async () => {
+//     setLoading(true);
+//     setError(null);
+//     try {
+//         const token = Cookies.get("access_token");
+//         const response = await axios.get(`${BASE_URL}/financials/expenses/`, {
+//             headers: { Authorization: `Bearer ${token}` },
+//         });
+
+//         console.log("API Response:", response.data); // Debugging
+
+//         // Extract expenses from response
+//         const expensesData = response.data.results || [];
+
+//         // Ensure each expense has the showDropdown field
+//         const expensesWithDropdown = expensesData.map((expense) => ({
+//             ...expense,
+//             showDropdown: false,
+//         }));
+
+//         setExpenses(expensesWithDropdown);
+//     } catch (error) {
+//         console.error("Error fetching expenses:", error);
+//         setError("Error fetching expenses");
+//     } finally {
+//         setLoading(false);
+//     }
+// };
+//   const handleViewExpense = async (id) => {
+//     try {
+//       const token = Cookies.get("access_token");
+//       const response = await axios.get(`${BASE_URL}/financials/expenses/${id}/`, {
+//         headers: { Authorization: `Bearer ${token}` },
+//       });
+//       setSelectedExpense({ ...response.data, isEditing: false });
+//       setShowModal(true);
+//     } catch (error) {
+//       console.error("Error fetching expense details:", error);
+//     }
+//   };
+//   const handleOpenEditModal = (expense) => {
+//     setSelectedExpense({ ...expense, isEditing: true });
+//     setShowModal(true);
+//   };
+//   const handleUpdateExpense = async () => {
+//     try {
+//       const token = Cookies.get("access_token");
+//       await axios.put(
+//         `${BASE_URL}/financials/expenses/${selectedExpense.id}/`,
+//         {
+//           description: selectedExpense.description,
+//           amount: selectedExpense.amount,
+//           date: selectedExpense.date,  
+//         },
+//         {
+//           headers: {
+//             "Content-Type": "application/json",
+//             Authorization: `Bearer ${token}`,
+//           },
+//         }
+//       );
+//       fetchExpenses();
+//       setShowModal(false);
+//     } catch (error) {
+//       console.error("Error updating expense:", error);
+//     }
+//   };
+//   const handleDeleteExpense = async (id) => {
+//     if (window.confirm("Are you sure you want to delete this expense?")) {
+//       try {
+//         const token = Cookies.get("access_token");
+//         await axios.delete(`${BASE_URL}/financials/expenses/${id}/`, {
+//           headers: { Authorization: `Bearer ${token}` },
+//         });
+//         setExpenses(expenses.filter((expense) => expense.id !== id));
+//         setShowModal(false);
+//       } catch (error) {
+//         console.error("Error deleting expense:", error);
+//       }
+//     }
+//   };
+//   if (loading) return <p>Loading expenses...</p>;
+//   if (error) return <p>{error}</p>;
+
+//   return (
+//     <>
+//       <OverlayScrollbarsComponent>
+//         <Table striped bordered hover>
+//           <thead>
+//             <tr>
+              
+//               <th>Expense ID</th>
+//               <th>Description</th>
+//               <th>Amount</th>
+//               <th>Date</th>
+//               <th>Action</th>
+//             </tr>
+//           </thead>
+//           <tbody>
+//             {expenses.length > 0 ? (
+//               expenses.map((expense, index) => (
+//                 <tr key={index}>
+//                   <td>{expense.id}</td>
+//                   <td>{expense.title}</td>
+//                   <td>{expense.amount}</td>
+//                   <td>{expense.date}</td>
+//                   <td>
+//                     <button className="btn btn-sm" onClick={() => handleViewExpense(expense.id)}>
+//                       <i className="fa-light fa-eye"></i>
+//                     </button>
+//                     <button className="btn btn-sm" onClick={() => handleOpenEditModal(expense)}>
+//                       <i className="fa-light fa-pen-to-square"></i>
+//                     </button>
+//                     <button className="btn btn-sm" onClick={() => handleDeleteExpense(expense.id)}>
+//                       <i className="fa-light fa-trash"></i>
+//                     </button>
+//                   </td>
+//                 </tr>
+//               ))
+//             ) : (
+//               <tr>
+//                 <td colSpan="6" className="text-center">
+//                   No expenses found.
+//                 </td>
+//               </tr>
+//             )}
+//           </tbody>
+//         </Table>
+//       </OverlayScrollbarsComponent>
+//       {showModal && selectedExpense && selectedExpense.isEditing && (
+//         <div className="modal fade show d-block">
+//           <div className="modal-dialog modal-dialog-centered">
+//             <div className="modal-content">
+//               <div className="modal-header">
+//                 <h5 className="modal-title">Update Expense</h5>
+//                 <button type="button" className="btn-close" onClick={() => setShowModal(false)}></button>
+//               </div>
+//               <div className="modal-body">
+//                 <input
+//                   type="text"
+//                   className="form-control"
+//                   value={selectedExpense.description}
+//                   onChange={(e) => setSelectedExpense({ ...selectedExpense, description: e.target.value })}
+//                 />
+//                 <button className="btn btn-primary mt-3" onClick={handleUpdateExpense}>
+//                   Update Expense
+//                 </button>
+//               </div>
+//             </div>
+//           </div>
+//         </div>
+//       )}
+//     </>
+//   );
+// };
+// export default AllExpenseTable;
 import React, { useState, useEffect, useRef } from "react";
 import axios from "axios";
 import { Table } from "react-bootstrap";
 import { OverlayScrollbarsComponent } from "overlayscrollbars-react";
-import PaginationSection from "./PaginationSection";
 import { BASE_URL } from "../../api";
 import Cookies from "js-cookie";
 
@@ -10,32 +185,25 @@ const AllExpenseTable = () => {
   const [expenses, setExpenses] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [currentPage, setCurrentPage] = useState(1);
-  const [totalPages, setTotalPages] = useState(1);
-  const [dataPerPage] = useState(10);
   const [selectedExpense, setSelectedExpense] = useState(null);
   const [showModal, setShowModal] = useState(false);
 
-  const dropdownRef = useRef(null);
-
   useEffect(() => {
-    fetchExpenses(currentPage);
-  }, [currentPage]);
+    fetchExpenses();
+  }, []);
 
-  const fetchExpenses = async (page) => {
+  const fetchExpenses = async () => {
+    setLoading(true);
+    setError(null);
     try {
       const token = Cookies.get("access_token");
-      const response = await axios.get(`${BASE_URL}/expenses/?page=${page}`, {
+      const response = await axios.get(`${BASE_URL}/financials/expenses/`, {
         headers: { Authorization: `Bearer ${token}` },
       });
 
-      const expensesWithDropdown = response.data.results.map((expense) => ({
-        ...expense,
-        showDropdown: false,
-      }));
-
-      setExpenses(expensesWithDropdown);
-      setTotalPages(response.data.total_pages);
+      console.log("API Response:", response.data); // Debugging
+      const expensesData = response.data.results || [];
+      setExpenses(expensesData);
     } catch (error) {
       console.error("Error fetching expenses:", error);
       setError("Error fetching expenses");
@@ -45,17 +213,12 @@ const AllExpenseTable = () => {
   };
 
   const handleViewExpense = async (id) => {
-    if (!id) {
-      console.error("Invalid expense ID:", id);
-      return;
-    }
-
     try {
-      const response = await fetch(`${BASE_URL}/expenses/${id}/`);
-      if (!response.ok) throw new Error("Failed to fetch expense details");
-
-      const data = await response.json();
-      setSelectedExpense({ ...data, isEditing: false });
+      const token = Cookies.get("access_token");
+      const response = await axios.get(`${BASE_URL}/financials/expenses/${id}/`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      setSelectedExpense({ ...response.data, isEditing: false });
       setShowModal(true);
     } catch (error) {
       console.error("Error fetching expense details:", error);
@@ -69,67 +232,41 @@ const AllExpenseTable = () => {
 
   const handleUpdateExpense = async () => {
     try {
-      const response = await fetch(`${BASE_URL}/expenses/${selectedExpense.id}/`, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${Cookies.get("access_token")}`,
-        },
-        body: JSON.stringify({
+      const token = Cookies.get("access_token");
+      await axios.put(
+        `${BASE_URL}/financials/expenses/${selectedExpense.id}/`,
+        {
           description: selectedExpense.description,
           amount: selectedExpense.amount,
           date: selectedExpense.date,
-          category: selectedExpense.category,
-        }),
-      });
-
-      if (response.ok) {
-        const updatedData = await response.json();
-        console.log("Updated Expense:", updatedData);
-        fetchExpenses(currentPage);
-        setShowModal(false);
-      } else {
-        console.error("Error updating expense:", await response.json());
-      }
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      setShowModal(false);
+      fetchExpenses(); // Refresh expenses after update
     } catch (error) {
-      console.error("Network error:", error);
+      console.error("Error updating expense:", error);
     }
   };
 
   const handleDeleteExpense = async (id) => {
     if (window.confirm("Are you sure you want to delete this expense?")) {
       try {
-        const response = await fetch(`${BASE_URL}/expenses/${id}/delete/`, {
-          method: "DELETE",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${Cookies.get("access_token")}`,
-          },
+        const token = Cookies.get("access_token");
+        await axios.delete(`${BASE_URL}/financials/expenses/${id}/`, {
+          headers: { Authorization: `Bearer ${token}` },
         });
-
-        if (response.ok) {
-          setExpenses(expenses.filter((expense) => expense.id !== id));
-          setShowModal(false);
-        } else {
-          console.error("Failed to delete expense:", await response.text());
-        }
+        fetchExpenses(); // Refresh expenses after delete
       } catch (error) {
         console.error("Error deleting expense:", error);
       }
     }
   };
-
-  const handleDropdownToggle = (event, index) => {
-    event.stopPropagation();
-    setExpenses((prevExpenses) =>
-      prevExpenses.map((expense, i) => ({
-        ...expense,
-        showDropdown: i === index ? !expense.showDropdown : false,
-      }))
-    );
-  };
-
-  const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
   if (loading) return <p>Loading expenses...</p>;
   if (error) return <p>{error}</p>;
@@ -140,58 +277,32 @@ const AllExpenseTable = () => {
         <Table striped bordered hover>
           <thead>
             <tr>
-              <th>Action</th>
               <th>Expense ID</th>
               <th>Description</th>
               <th>Amount</th>
               <th>Date</th>
+              <th>Action</th>
             </tr>
           </thead>
           <tbody>
             {expenses.length > 0 ? (
               expenses.map((expense, index) => (
                 <tr key={index}>
-                  <td>
-                    <div className="dropdown d-inline-block" ref={dropdownRef}>
-                      <button
-                        className={`btn btn-sm btn-outline-primary ${expense.showDropdown ? "show" : ""}`}
-                        onClick={(event) => handleDropdownToggle(event, index)}
-                      >
-                        Action <i className="fa-regular fa-angle-down"></i>
-                      </button>
-                      <ul className={`dropdown-menu ${expense.showDropdown ? "show" : ""}`}>
-                        <li>
-                          <button className="dropdown-item" onClick={() => handleViewExpense(expense.id)}>
-                            <span className="dropdown-icon">
-                              <i className="fa-light fa-eye"></i>
-                            </span>
-                            View
-                          </button>
-                        </li>
-                        <li>
-                          <button className="dropdown-item" onClick={() => handleOpenEditModal(expense)}>
-                            <span className="dropdown-icon">
-                              <i className="fa-light fa-pen-nib"></i>
-                            </span>
-                            Update
-                          </button>
-                        </li>
-                        <li>
-                          <button className="dropdown-item" onClick={() => handleDeleteExpense(expense.id)}>
-                            <span className="dropdown-icon">
-                              <i className="fa-light fa-trash-can"></i>
-                            </span>
-                            Delete
-                          </button>
-                        </li>
-                      </ul>
-                    </div>
-                  </td>
                   <td>{expense.id}</td>
-                  <td>{expense.description}</td>
+                  <td>{expense.title}</td>
                   <td>{expense.amount}</td>
                   <td>{expense.date}</td>
-                  <td>{expense.category}</td>
+                  <td>
+                    <button className="btn btn-sm" onClick={() => handleViewExpense(expense.id)}>
+                      <i className="fa-light fa-eye"></i>
+                    </button>
+                    <button className="btn btn-sm" onClick={() => handleOpenEditModal(expense)}>
+                      <i className="fa-light fa-pen-to-square"></i>
+                    </button>
+                    <button className="btn btn-sm" onClick={() => handleDeleteExpense(expense.id)}>
+                      <i className="fa-light fa-trash"></i>
+                    </button>
+                  </td>
                 </tr>
               ))
             ) : (
@@ -205,10 +316,6 @@ const AllExpenseTable = () => {
         </Table>
       </OverlayScrollbarsComponent>
 
-      {/* Pagination */}
-      <PaginationSection currentPage={currentPage} totalPages={totalPages} paginate={paginate} />
-
-      {/* Edit Modal */}
       {showModal && selectedExpense && selectedExpense.isEditing && (
         <div className="modal fade show d-block">
           <div className="modal-dialog modal-dialog-centered">
@@ -218,15 +325,38 @@ const AllExpenseTable = () => {
                 <button type="button" className="btn-close" onClick={() => setShowModal(false)}></button>
               </div>
               <div className="modal-body">
+                <label className="form-label">Description:</label>
                 <input
                   type="text"
-                  className="form-control"
+                  className="form-control mb-2"
                   value={selectedExpense.description}
                   onChange={(e) => setSelectedExpense({ ...selectedExpense, description: e.target.value })}
                 />
-                <button className="btn btn-primary mt-3" onClick={handleUpdateExpense}>
-                  Update Expense
-                </button>
+
+                <label className="form-label">Amount:</label>
+                <input
+                  type="number"
+                  className="form-control mb-2"
+                  value={selectedExpense.amount}
+                  onChange={(e) => setSelectedExpense({ ...selectedExpense, amount: e.target.value })}
+                />
+
+                <label className="form-label">Date:</label>
+                <input
+                  type="date"
+                  className="form-control mb-3"
+                  value={selectedExpense.date}
+                  onChange={(e) => setSelectedExpense({ ...selectedExpense, date: e.target.value })}
+                />
+
+                <div className="d-flex justify-content-between">
+                  <button className="btn btn-primary" onClick={() => setShowModal(false)}>
+                  cancel
+                  </button>
+                  <button className="btn btn-primary" onClick={handleUpdateExpense}>
+                    Update Expense
+                  </button>
+                </div>
               </div>
             </div>
           </div>
@@ -237,3 +367,207 @@ const AllExpenseTable = () => {
 };
 
 export default AllExpenseTable;
+
+
+
+// import React, { useState, useEffect, useRef } from "react";
+// import axios from "axios";
+// import { Table } from "react-bootstrap";
+// import { OverlayScrollbarsComponent } from "overlayscrollbars-react";
+// import { BASE_URL } from "../../api";
+// import Cookies from "js-cookie";
+
+// const AllExpenseTable = () => {
+//   const [expenses, setExpenses] = useState([]);
+//   const [loading, setLoading] = useState(true);
+//   const [error, setError] = useState(null);
+//   const [selectedExpense, setSelectedExpense] = useState(null);
+//   const [showModal, setShowModal] = useState(false);
+
+//   useEffect(() => {
+//     fetchExpenses();
+//   }, []);
+
+//   const fetchExpenses = async () => {
+//     setLoading(true);
+//     setError(null);
+//     try {
+//       const token = Cookies.get("access_token");
+//       const response = await axios.get(`${BASE_URL}/financials/expenses/`, {
+//         headers: { Authorization: `Bearer ${token}` },
+//       });
+
+//       console.log("API Response:", response.data);
+
+//       const expensesData = response.data.results || [];
+//       setExpenses(expensesData);
+//     } catch (error) {
+//       console.error("Error fetching expenses:", error);
+//       setError("Error fetching expenses");
+//     } finally {
+//       setLoading(false);
+//     }
+//   };
+
+//   const handleViewExpense = async (id) => {
+//     try {
+//       const token = Cookies.get("access_token");
+//       const response = await axios.get(`${BASE_URL}/financials/expenses/${id}/`, {
+//         headers: { Authorization: `Bearer ${token}` },
+//       });
+//       setSelectedExpense({ ...response.data, isEditing: false });
+//       setShowModal(true);
+//     } catch (error) {
+//       console.error("Error fetching expense details:", error);
+//     }
+//   };
+
+//   const handleOpenEditModal = (expense) => {
+//     setSelectedExpense({ ...expense, isEditing: true });
+//     setShowModal(true);
+//   };
+
+//   const handleUpdateExpense = async () => {
+//     try {
+//       const token = Cookies.get("access_token");
+//       await axios.put(
+//         `${BASE_URL}/financials/expenses/${selectedExpense.id}/`,
+//         {
+//           title: selectedExpense.title,
+//           amount: selectedExpense.amount,
+//           date: selectedExpense.date,
+//         },
+//         {
+//           headers: {
+//             "Content-Type": "application/json",
+//             Authorization: `Bearer ${token}`,
+//           },
+//         }
+//       );
+//       fetchExpenses();
+//       setShowModal(false);
+//     } catch (error) {
+//       console.error("Error updating expense:", error);
+//     }
+//   };
+
+//   const handleDeleteExpense = async (id) => {
+//     if (window.confirm("Are you sure you want to delete this expense?")) {
+//       try {
+//         const token = Cookies.get("access_token");
+//         await axios.delete(`${BASE_URL}/financials/expenses/${id}/`, {
+//           headers: { Authorization: `Bearer ${token}` },
+//         });
+//         setExpenses(expenses.filter((expense) => expense.id !== id));
+//         setShowModal(false);
+//       } catch (error) {
+//         console.error("Error deleting expense:", error);
+//       }
+//     }
+//   };
+
+//   if (loading) return <p>Loading expenses...</p>;
+//   if (error) return <p>{error}</p>;
+
+//   return (
+//     <>
+//       <OverlayScrollbarsComponent>
+//         <Table striped bordered hover>
+//           <thead>
+//             <tr>
+//               <th>Expense ID</th>
+//               <th>Title</th>
+//               <th>Amount</th>
+//               <th>Date</th>
+//               <th>Action</th>
+//             </tr>
+//           </thead>
+//           <tbody>
+//             {expenses.length > 0 ? (
+//               expenses.map((expense) => (
+//                 <tr key={expense.id}>
+//                   <td>{expense.id}</td>
+//                   <td>{expense.title}</td>
+//                   <td>{expense.amount}</td>
+//                   <td>{expense.date}</td>
+//                   <td>
+//                     <button className="btn btn-sm" onClick={() => handleViewExpense(expense.id)}>
+//                       <i className="fa-light fa-eye"></i>
+//                     </button>
+//                     <button className="btn btn-sm" onClick={() => handleOpenEditModal(expense)}>
+//                       <i className="fa-light fa-pen-to-square"></i>
+//                     </button>
+//                     <button className="btn btn-sm" onClick={() => handleDeleteExpense(expense.id)}>
+//                       <i className="fa-light fa-trash"></i>
+//                     </button>
+//                   </td>
+//                 </tr>
+//               ))
+//             ) : (
+//               <tr>
+//                 <td colSpan="5" className="text-center">
+//                   No expenses found.
+//                 </td>
+//               </tr>
+//             )}
+//           </tbody>
+//         </Table>
+//       </OverlayScrollbarsComponent>
+
+//       {/* Expense Edit Modal */}
+//       {showModal && selectedExpense && (
+//         <div className="modal fade show d-block">
+//           <div className="modal-dialog modal-dialog-centered">
+//             <div className="modal-content">
+//               <div className="modal-header">
+//                 <h5 className="modal-title">
+//                   {selectedExpense.isEditing ? "Edit Expense" : "View Expense"}
+//                 </h5>
+//                 <button type="button" className="btn-close" onClick={() => setShowModal(false)}></button>
+//               </div>
+//               <div className="modal-body">
+//                 <div className="mb-3">
+//                   <label className="form-label">Title</label>
+//                   <input
+//                     type="text"
+//                     className="form-control"
+//                     value={selectedExpense.title}
+//                     onChange={(e) => setSelectedExpense({ ...selectedExpense, title: e.target.value })}
+//                     disabled={!selectedExpense.isEditing}
+//                   />
+//                 </div>
+//                 <div className="mb-3">
+//                   <label className="form-label">Amount</label>
+//                   <input
+//                     type="number"
+//                     className="form-control"
+//                     value={selectedExpense.amount}
+//                     onChange={(e) => setSelectedExpense({ ...selectedExpense, amount: e.target.value })}
+//                     disabled={!selectedExpense.isEditing}
+//                   />
+//                 </div>
+//                 <div className="mb-3">
+//                   <label className="form-label">Date</label>
+//                   <input
+//                     type="date"
+//                     className="form-control"
+//                     value={selectedExpense.date}
+//                     onChange={(e) => setSelectedExpense({ ...selectedExpense, date: e.target.value })}
+//                     disabled={!selectedExpense.isEditing}
+//                   />
+//                 </div>
+//                 {selectedExpense.isEditing && (
+//                   <button className="btn btn-primary mt-3" onClick={handleUpdateExpense}>
+//                     Update Expense
+//                   </button>
+//                 )}
+//               </div>
+//             </div>
+//           </div>
+//         </div>
+//       )}
+//     </>
+//   );
+// };
+
+// export default AllExpenseTable;
