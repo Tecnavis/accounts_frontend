@@ -1,27 +1,28 @@
 import React from 'react'
 import Footer from '../components/footer/Footer'
-import AllSalesHeader from '../components/header/AllSalesHeader'
-import AllProductTable from '../components/tables/AllProductTable'
-import AllSalesTable from '../components/tables/AllSalesTable'
-import HeaderBtn from '../components/header/HeaderBtn'
+import AllCustomerHeader from '../components/header/AllCustomerHeader'
+import AllCustomerTable from '../components/tables/AllCustomerTable'
+import AllExpensesHeader from '../components/header/AllExpenceHeader'
+import AllExpensesTable from '../components/tables/AllExpenseTable'
 
-const AllExpensesMainContent = () => {
+const AllExpenses = () => {
   return (
     <div className="main-content">
-        <div className="row g-4">
+        <div className="row">
             <div className="col-12">
                 <div className="panel">
-                    <AllSalesHeader/>
+                    <AllExpensesHeader/>
+                    {/* <AllCustomerHeader/> */}
                     <div className="panel-body">
-                        <HeaderBtn/>
-                        <AllSalesTable/>
+                        <AllExpensesTable/>
                     </div>
                 </div>
             </div>
         </div>
+
         <Footer/>
-        
     </div>
   )
 }
-export default AllExpensesMainContent
+
+export default AllExpenses
