@@ -95,7 +95,7 @@ const PurchasesData = () => {
         let newErrors = {};
     
         if (!formData.partner) {
-            newErrors.partner = formData.transaction_type === "sale" 
+            newErrors.partner = formData.transaction_type === "purchase" 
                 ? "Please select a customer" 
                 : "Please select a vendor";
         }
@@ -264,7 +264,6 @@ const PurchasesData = () => {
                         </select>
                     </div>
                 </div> 
-
                 <div className="row g-3 mb-3">
                     <label
                         htmlFor="partner"
@@ -316,11 +315,7 @@ const PurchasesData = () => {
                                 }}
                             />
                         </div>
-
-                    </div>
-
-                    
-
+                    </div>          
                 <div className="row g-3 mb-3">
                     <label htmlFor="billing_address" className="col-md-2 col-form-label col-form-label-sm">
                         Billing Address

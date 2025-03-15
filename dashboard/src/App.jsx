@@ -19,6 +19,8 @@ import AddSales from "./pages/AddSales"
 import AddPurchase from "./pages/AddPurchase"
 import AllProduct from "./pages/AllProduct"
 import AllSales from "./pages/AllSales"
+import AllExpenses from "./pages/AllExpenses"
+import AddExpenses from "./pages/AddExpenses"
 import AllPurchase from "./pages/AllPurchase"
 import Category from "./pages/Category"
 import Invoices from "./pages/Invoices"
@@ -69,6 +71,9 @@ function App() {
 
             <Route path="/allSales" element={<AllSales />} />
             <Route path="/addSales" element={<AddSales />} />
+
+            <Route path="/allExpenses" element={<AllExpenses />} />
+            <Route path="/addExpenses" element={<AddExpenses />} />
 
             <Route path="/allpurchase" element={<AllPurchase />} />
             <Route path="/addPurchase" element={<AddPurchase />} />

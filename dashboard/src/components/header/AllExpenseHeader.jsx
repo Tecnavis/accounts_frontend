@@ -4,40 +4,23 @@ import { DigiContext } from "../../context/DigiContext";
 import { Link } from "react-router-dom";
 import jsPDF from "jspdf";
 import "jspdf-autotable";
-import * as XLSX from "xlsx"; 
 import axios from "axios";
 import { BASE_URL } from "../../api";
+import * as XLSX from "xlsx"; 
 import Cookies from "js-cookie";
 
-const AllPurchaseHeader = () => {
+const AllSalesHeader = () => {
   const { headerBtnOpen, handleHeaderBtn, handleHeaderReset, headerRef } =
     useContext(DigiContext);
 
-  const [checkboxes, setCheckboxes] = useState({
-    showProducts: true,
-    showPublished: true,
-    showStock: true,
-    showPrice: true,
-    showSales: true,
-    showRating: true,
-  });
-
-  const handleChange = (e) => {
-    const { id } = e.target;
-    setCheckboxes((prevCheckboxes) => ({
-      ...prevCheckboxes,
-      [id]: !prevCheckboxes[id],
-    }));
-  };
-
-  const downloadPurchasePDF = async () => {
+    const downloadSalesPDF = async () => {
     try {
       const response = await axios.get(`${BASE_URL}/financials/transactions_list/`);
       const transactions = response.data;
 
       const doc = new jsPDF();
       doc.setFontSize(10);
-      doc.text("Purchase Report", doc.internal.pageSize.getWidth() / 2, 10, { align: "center" });
+      doc.text("Sales Report", doc.internal.pageSize.getWidth() / 2, 10, { align: "center" });
 
       const columns = [
         "Transaction ID",
@@ -50,8 +33,9 @@ const AllPurchaseHeader = () => {
         "Payment Modes",
       ];
 
+
       const rows = transactions
-        .filter((transaction) => transaction.transaction_type === "purchase")
+        .filter((transaction) => transaction.transaction_type === "sale")
         .map((transaction) => {
           const paymentModes = transaction.payments
             ?.map((payment) => payment.payment_mode)
@@ -75,66 +59,59 @@ const AllPurchaseHeader = () => {
         startY: 20,
       });
 
-      doc.save("Purchase_Report.pdf");
+      doc.save("Sales_Report.pdf");
     } catch (error) {
-      console.error("Error generating purchase PDF:", error);
+      console.error("Error generating Sales PDF:", error);
     }
-  };
+  };  
 
-
-  const exportToExcel = async () => {
+  const downloadSalesExcel = async () => {
     try {
       const response = await axios.get(`${BASE_URL}/financials/transactions_list/`);
       const transactions = response.data;
-  
+
       if (transactions.length === 0) {
         alert("No data available to export.");
         return;
       }
-  
+
       const exportData = transactions
-        .filter((transaction) => transaction.transaction_type === "purchase")
-        .map((transaction) => {
-          const paymentModes = transaction.payments
-            ?.map((payment) => payment.payment_mode)
-            .join(", ") || "N/A";
-  
-          return {
-            "Transaction ID": transaction.transaction_id,
-            "Username": transaction.username,
-            "Service": transaction.service_name,
-            "Price": `Rs ${transaction.service_price}`,
-            "Total Paid": `Rs ${transaction.total_paid}`,
-            "Remaining Amount": `Rs ${transaction.remaining_amount}`,
-            "Sale Date": transaction.sale_date,
-            "Payment Modes": paymentModes,
-          };
-        });
-  
+        .filter((transaction) => transaction.transaction_type === "sale")
+        .map((transaction) => ({
+          "Transaction ID": transaction.transaction_id,
+          "Username": transaction.username,
+          "Service": transaction.service_name,
+          "Price": `Rs ${transaction.service_price}`,
+          "Total Paid": `Rs ${transaction.total_paid}`,
+          "Remaining Amount": `Rs ${transaction.remaining_amount}`,
+          "Sale Date": transaction.sale_date,
+          "Payment Modes": transaction.payments?.map((payment) => payment.payment_mode).join(", ") || "N/A",
+        }));
+
       const ws = XLSX.utils.json_to_sheet(exportData);
-  
+
       const colWidths = [
-        { wpx: 120 }, 
-        { wpx: 150 }, 
-        { wpx: 200 }, 
-        { wpx: 100 },
         { wpx: 100 }, 
         { wpx: 150 },
-        { wpx: 120 }, 
-        { wpx: 180 }, 
+        { wpx: 200 }, 
+        { wpx: 100 }, 
+        { wpx: 100 }, 
+        { wpx: 150 },
+        { wpx: 100 }, 
+        { wpx: 150 }, 
       ];
-  
-      ws["!cols"] = colWidths; 
-  
+
+      ws['!cols'] = colWidths; 
+
+     
       const wb = XLSX.utils.book_new();
-      XLSX.utils.book_append_sheet(wb, ws, "Purchases");
-  
-      XLSX.writeFile(wb, "Purchase_Report.xlsx");
+      XLSX.utils.book_append_sheet(wb, ws, "Sales Data");
+
+      XLSX.writeFile(wb, "Sales_Report.xlsx");
     } catch (error) {
-      console.error("Error exporting to Excel:", error);
+      console.error("Error exporting Sales Excel:", error);
     }
   };
-
   const uploadSalesExcel = async (event) => {
     const file = event.target.files[0];
     if (!file) return;
@@ -144,7 +121,7 @@ const AllPurchaseHeader = () => {
   
     try {
       const response = await axios.post(
-        `${BASE_URL}/financials/import_excel_purchase/`,
+        `${BASE_URL}/financials/import-excel/`,
         formData,
         {
           headers: {
@@ -153,7 +130,6 @@ const AllPurchaseHeader = () => {
           },
         }
       );
-      console.log("Response:", response.data);
       alert("Sales data imported successfully!");
     } catch (error) {
       console.error("Error uploading sales data:", error.response?.data || error);
@@ -163,20 +139,20 @@ const AllPurchaseHeader = () => {
   
   return (
     <div className="panel-header">
-      <h5>Purchases</h5>
+      <h5>Sales</h5>
       <div className="btn-box d-flex flex-wrap gap-2">
         <div id="tableSearch">
           <Form.Control type="text" placeholder="Search..." />
         </div>
         <div className="btn-box">
-          <Link to="/addPurchase" className="btn btn-sm btn-primary">
-            <i className="fa-light fa-plus"></i> Add New
+          <Link to="/addExpense" className="btn btn-sm btn-primary">
+            <i className="fa-light fa-plus"></i>Add New
           </Link>
-          <Button className="btn btn-sm btn-success ms-2" onClick={downloadPurchasePDF}>
+          <Button className="btn btn-sm btn-success ms-2" onClick={downloadSalesPDF}>
             <i className="fa fa-download"></i> PDF
           </Button>
-          <Button className="btn btn-sm btn-info ms-2 text-white" onClick={exportToExcel}>
-            <i className="fa fa-file-excel"></i> Excel
+          <Button className="btn btn-sm btn-info ms-2 text-white" onClick={downloadSalesExcel}>
+            <i className="fa-light fa-file-excel"></i>Excel
           </Button>
 
           <input type="file" accept=".xlsx, .xls" onChange={uploadSalesExcel} className="d-none" id="uploadExcel" />
@@ -190,5 +166,4 @@ const AllPurchaseHeader = () => {
   );
 };
 
-export default AllPurchaseHeader;
-
+export default AllSalesHeader;
