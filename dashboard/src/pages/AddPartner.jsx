@@ -185,20 +185,3 @@ const AddPartner = () => {
 
 export default AddPartner;
 
-
-// saudi contact no validation
-// const validateForm = () => {
-//   const { email, contact_number } = formData;
-//   const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-//   const saudiPhoneRegex = /^(?:05[0-9]{8}|0[1-9]{2}[0-9]{7})$/;
-
-//   if (!emailRegex.test(email)) {
-//     setMessage("Invalid email format.");
-//     return false;
-//   }
-//   if (!saudiPhoneRegex.test(contact_number)) {
-//     setMessage("Invalid Saudi contact number. Must start with '05' for mobile or a valid landline code.");
-//     return false;
-//   }
-//   return true;
-// };
